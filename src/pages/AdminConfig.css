@@ -1,0 +1,188 @@
+.admin-config-container {
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+
+.admin-config-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.admin-config-header h1 {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.admin-config-header p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+.config-section {
+    margin-bottom: 40px;
+}
+
+.config-section h2 {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+}
+
+.config-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.config-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #eee;
+}
+
+.config-item:last-child {
+    border-bottom: none;
+}
+
+.config-label {
+    flex: 1;
+}
+
+.config-label strong {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.config-label small {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.config-value {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.config-value span {
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.price-badge {
+    background: var(--primary);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.config-info {
+    background: #e3f2fd;
+    padding: 24px;
+    border-radius: 12px;
+    border-left: 4px solid #1976d2;
+}
+
+.config-info h3 {
+    color: #1976d2;
+    margin-bottom: 12px;
+}
+
+.config-info p {
+    color: #0d47a1;
+    margin-bottom: 8px;
+}
+
+.config-info p:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .config-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .config-value {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .admin-config-header h1 {
+        font-size: 2rem;
+    }
+}
+
+/* Affiliate Link Styles */
+.affiliate-link {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 2px solid #93c5fd;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.affiliate-link:hover {
+    color: #1d4ed8;
+    border-bottom-color: #1d4ed8;
+    background-color: #eff6ff;
+}
+
+.affiliate-link::after {
+    content: '↗';
+    font-size: 0.8em;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.btn-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    z-index: 10;
+}
+
+.btn-close:hover {
+    color: #000;
+}

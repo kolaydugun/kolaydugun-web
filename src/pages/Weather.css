@@ -1,0 +1,132 @@
+.weather-container {
+    margin-top: 100px;
+}
+
+.weather-header {
+    margin-bottom: 1rem;
+}
+
+.weather-desc {
+    color: var(--color-text-light);
+    margin-bottom: 2rem;
+}
+
+.weather-form-card {
+    background: var(--color-bg-white);
+    padding: 2rem;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 2rem;
+}
+
+.weather-form-grid {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    font-size: 1rem;
+}
+
+.weather-submit-btn {
+    width: 100%;
+    padding: 14px;
+}
+
+.forecast-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    color: var(--color-white);
+    margin-bottom: 2rem;
+}
+
+.forecast-title {
+    margin-bottom: 1.5rem;
+    color: var(--color-white);
+}
+
+.forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.forecast-stat {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 1.5rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.forecast-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.forecast-value {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.forecast-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.forecast-condition-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.recommendations-card {
+    background: var(--color-bg-white);
+    padding: 2rem;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.recommendations-title {
+    margin-bottom: 1.5rem;
+    color: var(--color-primary);
+}
+
+.recommendations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.recommendation-item {
+    padding: 1rem;
+    background: var(--color-bg-light);
+    border-radius: var(--border-radius-sm);
+    border-left: 4px solid var(--color-primary);
+}
+
+.empty-state {
+    background: var(--color-bg-white);
+    padding: 3rem;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    color: var(--color-text-light);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.empty-disclaimer {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    color: var(--color-text-light);
+    opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+    .weather-form-grid {
+        grid-template-columns: 1fr;
+    }
+}

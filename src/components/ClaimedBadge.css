@@ -1,0 +1,41 @@
+.claimed-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: help;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.claimed-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.claimed-icon {
+    width: 16px;
+    height: 16px;
+    color: white;
+}
+
+.claimed-text {
+    letter-spacing: 0.3px;
+}
+
+/* Alternative green style (comment out purple if using this) */
+/*
+.claimed-badge {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  box-shadow: 0 2px 8px rgba(17, 153, 142, 0.3);
+}
+
+.claimed-badge:hover {
+  box-shadow: 0 4px 12px rgba(17, 153, 142, 0.4);
+}
+*/

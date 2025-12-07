@@ -1,0 +1,83 @@
+.user-type-toggle {
+    display: flex;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.toggle-btn {
+    flex: 1;
+    padding: 1rem;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-weight: 400;
+    color: var(--color-text-light);
+    cursor: pointer;
+    font-family: var(--font-family-main);
+    transition: all var(--transition-fast);
+}
+
+.toggle-btn.active {
+    border-bottom-color: var(--color-primary);
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group.last {
+    margin-bottom: 2rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--color-secondary);
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-family-main);
+    transition: border-color var(--transition-fast);
+}
+
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.form-input.error,
+.form-select.error {
+    border-color: var(--color-accent);
+}
+
+.error-text {
+    color: var(--color-accent);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.register-btn {
+    width: 100%;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--color-text-light);
+}
+
+.login-link a {
+    color: var(--color-primary);
+    font-weight: 500;
+}

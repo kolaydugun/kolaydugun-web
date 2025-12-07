@@ -1,0 +1,136 @@
+.faq-section {
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    padding: 4rem 0;
+}
+
+.faq-section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.faq-section-header h2 {
+    font-size: 2.2rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.faq-section-header p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+/* FAQ Grid */
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.faq-card {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.faq-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+    transform: translateY(-2px);
+}
+
+.faq-card.active {
+    border-color: var(--primary-color);
+    box-shadow: 0 6px 16px rgba(139, 92, 246, 0.15);
+}
+
+.faq-card-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.faq-card-question h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    flex: 1;
+    line-height: 1.5;
+}
+
+.faq-card-toggle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    min-width: 30px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.faq-card.active .faq-card-toggle {
+    transform: rotate(180deg);
+}
+
+.faq-card-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, margin-top 0.3s ease-out;
+}
+
+.faq-card.active .faq-card-answer {
+    max-height: 500px;
+    margin-top: 1rem;
+}
+
+.faq-card-answer p {
+    margin: 0;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* Footer */
+.faq-section-footer {
+    text-align: center;
+}
+
+.faq-section-footer .btn {
+    padding: 1rem 2rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .faq-section {
+        padding: 3rem 0;
+    }
+
+    .faq-section-header h2 {
+        font-size: 1.8rem;
+    }
+
+    .faq-section-header p {
+        font-size: 1rem;
+    }
+
+    .faq-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .faq-card {
+        padding: 1.25rem;
+    }
+
+    .faq-card-question h3 {
+        font-size: 1rem;
+    }
+}

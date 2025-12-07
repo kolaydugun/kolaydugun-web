@@ -1,0 +1,1 @@
+ALTER TABLE vendors ALTER COLUMN capacity DROP NOT NULL;

@@ -1,0 +1,174 @@
+.admin-leads-container {
+    padding-bottom: 50px;
+}
+
+.admin-leads-header {
+    margin-bottom: 2rem;
+}
+
+.admin-leads-header h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.admin-leads-header p {
+    color: #666;
+}
+
+/* Status Badges & Selects */
+.status-select {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s;
+    appearance: none;
+    /* Remove default arrow in some browsers for cleaner look */
+    text-align: center;
+}
+
+.status-select.new {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    border-color: #bbdefb;
+}
+
+.status-select.contacted {
+    background-color: #fff3e0;
+    color: #f57c00;
+    border-color: #ffe0b2;
+}
+
+.status-select.quoted {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+    border-color: #e1bee7;
+}
+
+.status-select.won {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border-color: #c8e6c9;
+}
+
+.status-select.lost {
+    background-color: #ffebee;
+    color: #c62828;
+    border-color: #ffcdd2;
+}
+
+/* Table Styles Override */
+.leads-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.leads-table th {
+    background: #f8f9fa;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: #444;
+    border-bottom: 2px solid #eee;
+}
+
+.leads-table td {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+}
+
+.leads-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Notes Area */
+.admin-notes-wrapper {
+    position: relative;
+}
+
+.admin-notes-input {
+    width: 100%;
+    min-width: 200px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    resize: vertical;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    background-color: #fafafa;
+}
+
+.admin-notes-input:focus {
+    border-color: #4a90e2;
+    background-color: #fff;
+    outline: none;
+}
+
+.save-note-btn {
+    margin-top: 5px;
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.save-note-btn:hover {
+    background-color: #357abd;
+}
+
+.note-saved-indicator {
+    font-size: 0.8rem;
+    color: #2e7d32;
+    margin-top: 4px;
+    display: inline-block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Contact Links */
+.contact-link {
+    display: block;
+    margin-bottom: 4px;
+    color: #333;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.contact-link:hover {
+    color: #4a90e2;
+    text-decoration: underline;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    color: #666;
+}

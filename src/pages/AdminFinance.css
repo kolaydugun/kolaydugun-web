@@ -1,0 +1,387 @@
+.admin-finance {
+    padding: 20px;
+}
+
+.finance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.date-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.date-filters button {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.date-filters button.active {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.custom-date-inputs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.custom-date-inputs input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.finance-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.card-icon {
+    font-size: 2.5em;
+}
+
+.card-content h3 {
+    margin: 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.card-content .amount {
+    margin: 5px 0;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-content .count {
+    font-size: 0.8em;
+    color: #999;
+}
+
+.summary-card.profit.positive .amount {
+    color: #28a745;
+}
+
+.summary-card.profit.negative .amount {
+    color: #dc3545;
+}
+
+.finance-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.finance-tabs button {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: 500;
+    color: #666;
+    border-radius: 4px;
+}
+
+.finance-tabs button.active {
+    background: #e9ecef;
+    color: #333;
+}
+
+.finance-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    font-weight: 600;
+    color: #555;
+    background: #f8f9fa;
+}
+
+.category-badge {
+    background: #e9ecef;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    color: #495057;
+}
+
+.amount-cell {
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.transaction-item .amount.income {
+    color: #28a745;
+}
+
+.transaction-item .amount.expense {
+    color: #dc3545;
+}
+
+.charts-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+}
+
+.chart-container {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.chart-wrapper {
+    margin-top: 20px;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-edit {
+    background: #ffc107;
+    color: #000;
+    border: none;
+    padding: 5px 10px;
+    .footer,
+    .sidebar,
+    .admin-sidebar,
+    .admin-header,
+    .cookie-consent,
+    .debug-console,
+    .notification-center,
+    .hamburger-btn,
+    .mobile-menu,
+    #zammad-feedback-form,
+    /* If exists */
+    .intercom-lightweight-app
+
+    /* If exists */
+        {
+        display: none !important;
+    }
+
+    /* Hide page-specific interactive elements */
+    .header-actions,
+    .date-filters,
+    .finance-tabs,
+    .action-buttons,
+    .btn-edit,
+    .btn-delete,
+    .btn,
+    button {
+        display: none !important;
+    }
+
+    /* Reset layout for print */
+    body,
+    html,
+    #root,
+    .App,
+    .admin-layout,
+    .admin-content {
+        background: white !important;
+        width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+
+    .admin-finance {
+        padding: 20px !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+        background: white !important;
+    }
+
+    .finance-content {
+        box-shadow: none !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    /* Ensure tables print well */
+    table {
+        width: 100% !important;
+        border: 1px solid #ddd;
+        border-collapse: collapse;
+        font-size: 12px;
+        /* Smaller font for print */
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        color: black !important;
+    }
+
+    /* Ensure charts and summaries are visible */
+    .finance-summary {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 15px !important;
+        margin-bottom: 30px !important;
+        page-break-inside: avoid;
+    }
+
+    .summary-card {
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+        padding: 15px !important;
+    }
+
+    .card-icon {
+        color: black !important;
+        /* Force icons to be visible/black */
+    }
+
+    /* Force background colors for charts if possible, or fallback */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Header adjustments */
+    .finance-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #333;
+        padding-bottom: 10px;
+    }
+
+    .finance-header h1 {
+        font-size: 24px;
+        color: black !important;
+        margin: 0;
+    }
+
+    .finance-header h1::after {
+        content: " - Finans Raporu (" attr(data-date) ")";
+        /* We can add date via JS if needed, or just static text */
+        font-size: 0.6em;
+        font-weight: normal;
+    }
+
+    /* Page break handling */
+    tr {
+        page-break-inside: avoid;
+    }
+
+    .chart-container {
+        page-break-inside: avoid;
+        border: 1px solid #eee;
+        margin-bottom: 20px;
+    }
+
+    /* Hide scrollbars */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}

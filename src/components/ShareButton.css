@@ -1,0 +1,48 @@
+.share-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.share-button:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.share-icon {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s ease;
+}
+
+.share-button:hover .share-icon {
+    transform: scale(1.1);
+}
+
+.share-text {
+    font-weight: 600;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .share-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .share-icon {
+        width: 16px;
+        height: 16px;
+    }
+}

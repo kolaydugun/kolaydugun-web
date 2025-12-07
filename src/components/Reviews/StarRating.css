@@ -1,0 +1,24 @@
+.star-rating {
+    display: flex;
+    align-items: center;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating.medium .star {
+    font-size: 24px;
+}
+
+.star-rating.large .star {
+    font-size: 32px;
+}
+
+.star-rating.small .star {
+    font-size: 16px;
+}
+
+.star {
+    transition: color 0.2s;
+}

@@ -1,0 +1,62 @@
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useLanguage } from '../context/LanguageContext';
+
+const SEO = ({
+    title,
+    description,
+    keywords,
+    image,
+    url,
+    structuredData,
+    type = 'website'
+}) => {
+    const { language } = useLanguage();
+    const siteName = 'KolayDugun.de';
+    const defaultDescription = 'Find the best wedding vendors in Germany. Turkish & International weddings made easy.';
+    const defaultImage = 'https://kolaydugun.de/og-image.jpg'; // We should update this with a real URL later
+    const siteUrl = 'https://kolaydugun.de';
+
+    const fullTitle = title ? `${title} | ${siteName}` : siteName;
+    const fullDescription = description || defaultDescription;
+    const fullUrl = url ? `${siteUrl}${url}` : siteUrl;
+    const fullImage = image || defaultImage;
+
+    return (
+        <Helmet>
+            {/* Standard metadata */}
+            <title>{fullTitle}</title>
+            <meta name="description" content={fullDescription} />
+            <meta name="keywords" content={keywords} />
+            <html lang={language} />
+
+            {/* Open Graph / Facebook */}
+            <meta property="og:type" content={type} />
+            <meta property="og:url" content={fullUrl} />
+            <meta property="og:title" content={fullTitle} />
+            <meta property="og:description" content={fullDescription} />
+            <meta property="og:image" content={fullImage} />
+            <meta property="og:site_name" content={siteName} />
+            <meta property="og:locale" content={language === 'tr' ? 'tr_TR' : language === 'de' ? 'de_DE' : 'en_US'} />
+
+            {/* Twitter */}
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:url" content={fullUrl} />
+            <meta name="twitter:title" content={fullTitle} />
+            <meta name="twitter:description" content={fullDescription} />
+            <meta name="twitter:image" content={fullImage} />
+
+            {/* Canonical */}
+            <link rel="canonical" href={fullUrl} />
+
+            {/* Structured Data (JSON-LD) */}
+            {structuredData && (
+                <script type="application/ld+json">
+                    {JSON.stringify(structuredData)}
+                </script>
+            )}
+        </Helmet>
+    );
+};
+
+export default SEO;

@@ -1,0 +1,421 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { supabase } from '../../supabaseClient';
+import { messageService } from '../../services/messageService';
+import './VendorMessages.css';
+
+import AdminMessaging from './AdminMessaging';
+
+const VendorMessages = ({ vendor }) => {
+    const { user } = useAuth();
+    const { t, language } = useLanguage();
+    const [activeView, setActiveView] = useState('leads'); // 'leads' or 'admin'
+    const [conversations, setConversations] = useState([]);
+    const [selectedLead, setSelectedLead] = useState(null);
+    const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState('');
+    const [loading, setLoading] = useState(true);
+    const messagesEndRef = useRef(null);
+
+    // Fetch conversations (unlocked leads)
+    useEffect(() => {
+        if (!vendor?.id) return;
+        setLoading(false);
+    }
+    };
+
+// Fetch messages for selected lead
+useEffect(() => {
+    if (!selectedLead) return;
+    fetchMessages();
+
+    // Set up real-time subscription for new messages
+    const conversation = conversations.find(c => c.id === selectedLead.id);
+    if (!conversation) return;
+
+    const subscription = supabase
+        .channel(`messages:${selectedLead.id}`)
+        .on(
+            'postgres_changes',
+            {
+                event: 'INSERT',
+                schema: 'public',
+                table: 'messages',
+                filter: `conversation_id=eq.${conversation.conversation_id}`
+            },
+            (payload) => {
+                setMessages(prev => [...prev, payload.new]);
+            }
+        )
+        .subscribe();
+
+    return () => {
+        subscription.unsubscribe();
+    };
+}, [selectedLead, conversations]);
+
+const fetchMessages = async () => {
+    try {
+        // Find the conversation for this lead
+        const { data: convData, error: convError } = await supabase
+            .from('conversations')
+            .select('id')
+            .eq('vendor_id', vendor.id)
+            .eq('lead_id', selectedLead.id)
+            .single();
+
+        if (convError || !convData) {
+            console.log('No conversation found for this lead');
+            setMessages([]);
+            return;
+        }
+
+        // Fetch messages for this conversation
+        const { data: messagesData, error: messagesError } = await supabase
+            .from('messages')
+            .select('*')
+            .eq('conversation_id', convData.id)
+            .order('created_at', { ascending: true });
+
+        if (messagesError) throw messagesError;
+        setMessages(messagesData || []);
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+        setMessages([]);
+    }
+};
+
+const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!newMessage.trim() || !selectedLead) return;
+
+    try {
+        // Find or create conversation
+        let conversationId;
+        const { data: existingConv, error: convError } = await supabase
+            .from('conversations')
+            .select('id')
+            .eq('vendor_id', vendor.id)
+            .eq('lead_id', selectedLead.id)
+            .single();
+
+        if (existingConv) {
+            conversationId = existingConv.id;
+        } else {
+            // Create conversation if it doesn't exist
+            const { data: newConv, error: createError } = await supabase
+                .from('conversations')
+                .insert({
+                    vendor_id: vendor.id,
+                    user_id: selectedLead.user_id,
+                    lead_id: selectedLead.id
+                })
+                .select()
+                .single();
+
+            if (createError) throw createError;
+            conversationId = newConv.id;
+        }
+
+        // Send the message
+        const { data: messageData, error: messageError } = await supabase
+            .from('messages')
+            .insert({
+                conversation_id: conversationId,
+                sender_id: user.id,
+                content: newMessage.trim()
+            })
+            .select()
+            .single();
+
+        if (messageError) throw messageError;
+
+        // Update conversation's updated_at
+        await supabase
+            .from('conversations')
+            .update({ updated_at: new Date().toISOString() })
+            .eq('id', conversationId);
+
+        // Add message to local state
+        setMessages(prev => [...prev, messageData]);
+        setNewMessage('');
+    } catch (error) {
+        console.error('Error sending message:', error);
+        alert('Mesaj gönderilemedi: ' + error.message);
+    }
+};
+
+// Scroll to bottom of messages
+useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+}, [messages]);
+
+if (activeView === 'admin') {
+    return <AdminMessaging onBack={() => setActiveView('leads')} />;
+}
+
+return (
+    <div className="vendor-messages-container">
+        <div className="conversations-sidebar">
+            <div className="sidebar-header-actions" style={{ padding: '20px', borderBottom: '1px solid #eee' }}>
+                <h3 style={{ padding: 0, border: 'none', marginBottom: '15px' }}>{t('dashboard.inquiries') || 'Mesajlar'}</h3>
+                <button
+                    className="contact-admin-btn"
+                    onClick={() => setActiveView('admin')}
+                    style={{
+                        width: '100%',
+                        padding: '10px',
+                        background: '#fff',
+                        border: '1px solid #2196f3',
+                        color: '#2196f3',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                        fontWeight: '600',
+                        transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={(e) => {
+                        e.target.style.background = '#2196f3';
+                        e.target.style.color = '#fff';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.target.style.background = '#fff';
+                        e.target.style.color = '#2196f3';
+                    }}
+                >
+                    👨‍💼 {t('dashboard.contactAdmin')}
+                </button>
+            </div>
+            <div className="conversations-list">
+                {conversations.map(lead => (
+                    <div
+                        key={lead.id}
+                        className={`conversation-item ${selectedLead?.id === lead.id ? 'active' : ''}`}
+                        onClick={() => setSelectedLead(lead)}
+                    >
+                        <div className="conversation-avatar">
+                            {lead.contact_name.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="conversation-info">
+                            <h4>{lead.contact_name}</h4>
+                            <p>
+                                {new Date(lead.created_at).toLocaleDateString('tr-TR')}
+                                {' '}
+                                {new Date(lead.created_at).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        <div className="chat-area">
+            {selectedLead ? (
+                <>
+                    <div className="chat-header">
+                        <h3>{selectedLead.contact_name}</h3>
+                        <span className={`status-badge ${selectedLead.vendor_status || 'new'}`}>
+                            {selectedLead.vendor_status || t('messages.statusNew')}
+                        </span>
+                    </div>
+
+                    <div className="messages-list">
+                        {messages.length === 0 ? (
+                            <div className="no-messages">
+                                <p>Henüz mesaj yok. İlk mesajı gönderin!</p>
+                            </div>
+                        ) : (
+                            messages.map(msg => (
+                                <div
+                                    key={msg.id}
+                                    className={`message-bubble ${msg.sender_id === user.id ? 'sent' : 'received'}`}
+                                >
+                                    <p>{msg.content}</p>
+                                    <span className="message-time">
+                                        {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    </span>
+                                </div>
+                            ))
+                        )}
+                        <div ref={messagesEndRef} />
+                    </div>
+
+                    {/* Quick Reply Templates */}
+                    <div style={{ padding: '10px', background: '#f5f5f5', borderTop: '1px solid #e0e0e0' }}>
+                        <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '8px', fontWeight: '600' }}>
+                            {language === 'tr' && '💬 Hızlı Yanıtlar:'}
+                            {language === 'en' && '💬 Quick Replies:'}
+                            {language === 'de' && '💬 Schnellantworten:'}
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const messages = {
+                                        tr: 'Teşekkürler, talebinizi inceliyorum. En kısa sürede size dönüş yapacağım.',
+                                        en: "Thank you, I'm reviewing your request. I'll get back to you shortly.",
+                                        de: 'Vielen Dank, ich prüfe Ihre Anfrage. Ich melde mich in Kürze bei Ihnen.'
+                                    };
+                                    setNewMessage(messages[language] || messages.tr);
+                                }}
+                                style={{
+                                    padding: '6px 12px',
+                                    background: '#fff',
+                                    border: '1px solid #2196f3',
+                                    borderRadius: '20px',
+                                    color: '#2196f3',
+                                    fontSize: '0.85rem',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.target.style.background = '#2196f3';
+                                    e.target.style.color = '#fff';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.target.style.background = '#fff';
+                                    e.target.style.color = '#2196f3';
+                                }}
+                            >
+                                {language === 'tr' && '📝 İnceliyorum'}
+                                {language === 'en' && '📝 Reviewing'}
+                                {language === 'de' && '📝 Prüfe'}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const messages = {
+                                        tr: 'Merhaba! Fiyat teklifimi hazırlıyorum. Kısa süre içinde detaylı bilgi göndereceğim.',
+                                        en: "Hello! I'm preparing your price quote. I'll send you detailed information shortly.",
+                                        de: 'Hallo! Ich bereite Ihr Preisangebot vor. Ich sende Ihnen in Kürze detaillierte Informationen.'
+                                    };
+                                    setNewMessage(messages[language] || messages.tr);
+                                }}
+                                style={{
+                                    padding: '6px 12px',
+                                    background: '#fff',
+                                    border: '1px solid #4caf50',
+                                    borderRadius: '20px',
+                                    color: '#4caf50',
+                                    fontSize: '0.85rem',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.target.style.background = '#4caf50';
+                                    e.target.style.color = '#fff';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.target.style.background = '#fff';
+                                    e.target.style.color = '#4caf50';
+                                }}
+                            >
+                                {language === 'tr' && '💰 Teklif Hazırlıyorum'}
+                                {language === 'en' && '💰 Preparing Quote'}
+                                {language === 'de' && '💰 Angebot vorbereiten'}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const messages = {
+                                        tr: 'Tarih müsaitliğini kontrol ediyorum. Hemen size geri dönüş yapacağım.',
+                                        en: "I'm checking the date availability. I'll get back to you right away.",
+                                        de: 'Ich prüfe die Verfügbarkeit des Datums. Ich melde mich sofort bei Ihnen.'
+                                    };
+                                    setNewMessage(messages[language] || messages.tr);
+                                }}
+                                style={{
+                                    padding: '6px 12px',
+                                    background: '#fff',
+                                    border: '1px solid #ff9800',
+                                    borderRadius: '20px',
+                                    color: '#ff9800',
+                                    fontSize: '0.85rem',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.target.style.background = '#ff9800';
+                                    e.target.style.color = '#fff';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.target.style.background = '#fff';
+                                    e.target.style.color = '#ff9800';
+                                }}
+                            >
+                                {language === 'tr' && '📅 Müsaitlik Kontrolü'}
+                                {language === 'en' && '📅 Checking Availability'}
+                                {language === 'de' && '📅 Verfügbarkeit prüfen'}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const messages = {
+                                        tr: 'Daha fazla detay için sizi arayabilir miyim? Telefon numaranızı paylaşabilir misiniz?',
+                                        en: 'Can I call you for more details? Could you share your phone number?',
+                                        de: 'Kann ich Sie für weitere Details anrufen? Könnten Sie Ihre Telefonnummer mitteilen?'
+                                    };
+                                    setNewMessage(messages[language] || messages.tr);
+                                }}
+                                style={{
+                                    padding: '6px 12px',
+                                    background: '#fff',
+                                    border: '1px solid #9c27b0',
+                                    borderRadius: '20px',
+                                    color: '#9c27b0',
+                                    fontSize: '0.85rem',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.target.style.background = '#9c27b0';
+                                    e.target.style.color = '#fff';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.target.style.background = '#fff';
+                                    e.target.style.color = '#9c27b0';
+                                }}
+                            >
+                                {language === 'tr' && '📞 Görüşme Talebi'}
+                                {language === 'en' && '📞 Request Call'}
+                                {language === 'de' && '📞 Anruf anfordern'}
+                            </button>
+                        </div>
+                    </div>
+
+                    <form className="message-input-area" onSubmit={handleSendMessage}>
+                        <input
+                            type="text"
+                            placeholder={t('messages.typePlaceholder')}
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                        />
+                        <button type="submit" disabled={!newMessage.trim()}>
+                            ➤
+                        </button>
+                    </form>
+                </>
+            ) : (
+                <div className="empty-chat-state">
+                    {conversations.length === 0 ? (
+                        <div style={{ textAlign: 'center', padding: '40px' }}>
+                            <p style={{ fontSize: '1.2rem', marginBottom: '10px' }}>{t('dashboard.noLeadsYet')}</p>
+                            <p style={{ color: '#666', fontSize: '0.9rem' }}>
+                                {t('dashboard.noLeadsInstructions')}
+                            </p>
+                        </div>
+                    ) : (
+                        <p>👈 Bir konuşma seçin</p>
+                    )}
+                </div>
+            )}
+        </div>
+    </div>
+);
+};
+
+export default VendorMessages;

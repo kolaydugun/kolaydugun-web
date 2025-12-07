@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /vendor-dashboard/
+Disallow: /tools/
+
+Sitemap: https://kolaydugun.de/sitemap.xml

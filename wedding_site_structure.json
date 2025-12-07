@@ -1,0 +1,186 @@
+{
+    "platform_info": {
+        "name": "KolayDugun.de",
+        "description": "Multi-language wedding planning platform for the European market.",
+        "languages": [
+            "tr",
+            "en",
+            "de"
+        ],
+        "target_market": "Germany, Europe, Turkey",
+        "brand_colors": {
+            "primary": "#FF6B9D",
+            "secondary": "#10B981",
+            "accent": "#F59E0B",
+            "background": "#FFF9F5"
+        }
+    },
+    "user_types": [
+        {
+            "type": "couple",
+            "description": "Couples planning their wedding.",
+            "access": [
+                "planning_tools",
+                "vendor_search",
+                "messaging",
+                "wedding_website"
+            ]
+        },
+        {
+            "type": "vendor",
+            "description": "Businesses providing wedding services.",
+            "access": [
+                "vendor_dashboard",
+                "profile_management",
+                "lead_management",
+                "messaging"
+            ]
+        }
+    ],
+    "features": {
+        "couple_tools": [
+            {
+                "key": "website",
+                "name": "Wedding Website Builder",
+                "status": "active"
+            },
+            {
+                "key": "timeline",
+                "name": "To-Do Checklist & Timeline",
+                "status": "active"
+            },
+            {
+                "key": "budget",
+                "name": "Budget Planner",
+                "status": "active"
+            },
+            {
+                "key": "seating",
+                "name": "Seating Chart Tool",
+                "status": "active"
+            },
+            {
+                "key": "guest_list",
+                "name": "Guest List & RSVP",
+                "status": "active"
+            },
+            {
+                "key": "weather",
+                "name": "Wedding Day Weather Forecast",
+                "status": "active"
+            }
+        ],
+        "vendor_features": [
+            {
+                "key": "dashboard",
+                "name": "Analytics Dashboard",
+                "status": "active"
+            },
+            {
+                "key": "messaging",
+                "name": "Direct User Messaging",
+                "status": "active"
+            },
+            {
+                "key": "subscription",
+                "name": "Tiered Subscription (Free/Premium)",
+                "status": "active"
+            },
+            {
+                "key": "credits",
+                "name": "Lead/Contact Credit System",
+                "status": "active"
+            }
+        ]
+    },
+    "categories": [
+        "Wedding Venues",
+        "Photographers",
+        "Music & DJ",
+        "Bridal Fashion",
+        "Hair & Makeup",
+        "Decor & Flowers",
+        "Catering",
+        "Wedding Planners"
+    ],
+    "business_model": {
+        "type": "Freemium Subscription + Credits",
+        "plans": [
+            {
+                "name": "Free",
+                "cost": 0,
+                "benefits": [
+                    "Basic Listing"
+                ]
+            },
+            {
+                "name": "Premium",
+                "cost": "Monthly/Annual Fee",
+                "benefits": [
+                    "Verified Badge",
+                    "Top Placement",
+                    "Social Links",
+                    "Monthly Credits",
+                    "Map View"
+                ]
+            }
+        ]
+    },
+    "content_strategy": {
+        "blog": {
+            "focus": "SEO-driven wedding guides and tips.",
+            "automation": "AI-assisted content generation.",
+            "linking": "Internal linking to vendors and tools."
+        },
+        "social_media": {
+            "focus_platforms": [
+                "Instagram",
+                "TikTok",
+                "LinkedIn"
+            ],
+            "content_types": [
+                "Reels (Process)",
+                "Showcase (Vendor)",
+                "Inspirational"
+            ]
+        }
+    },
+    "future_roadmap": {
+        "short_term": [
+            {
+                "feature": "AI Wedding Assistant (Chatbot)",
+                "benefit": "Increased engagement",
+                "difficulty": "Medium"
+            },
+            {
+                "feature": "Content Templates (Vows, RSVP)",
+                "benefit": "User value add",
+                "difficulty": "Low"
+            }
+        ],
+        "medium_term": [
+            {
+                "feature": "Community Forum",
+                "benefit": "Retention & SEO",
+                "difficulty": "Medium"
+            },
+            {
+                "feature": "360° Venue Tours",
+                "benefit": "Premium vendor value",
+                "difficulty": "High"
+            }
+        ],
+        "long_term": [
+            {
+                "feature": "In-App Payments",
+                "benefit": "New revenue stream",
+                "difficulty": "Very High"
+            },
+            {
+                "feature": "Native Mobile App",
+                "benefit": "Better retention & notifications",
+                "difficulty": "High"
+            }
+        ]
+    }
+}

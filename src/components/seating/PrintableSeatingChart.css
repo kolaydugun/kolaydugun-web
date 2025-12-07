@@ -1,0 +1,298 @@
+/* Modern Printable Seating Chart Styles */
+.printable-seating-chart {
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 15mm;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #ffffff;
+    min-height: 100vh;
+    color: #2c3e50;
+}
+
+/* Header Section */
+.print-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.print-header h1 {
+    font-size: 36px;
+    margin: 0 0 15px 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.venue-name {
+    font-size: 28px;
+    font-weight: 300;
+    margin: 10px 0;
+    opacity: 0.95;
+    font-style: italic;
+}
+
+/* Summary Cards */
+.print-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.summary-item {
+    text-align: center;
+    padding: 25px 15px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: white;
+    transition: transform 0.2s;
+}
+
+.summary-item:nth-child(2) {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.summary-item:nth-child(3) {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.summary-item:nth-child(4) {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.summary-item strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.summary-item span {
+    font-size: 32px;
+    font-weight: 700;
+    display: block;
+}
+
+/* Section Headers */
+.print-section {
+    margin: 50px 0 30px 0;
+}
+
+.print-section h2 {
+    font-size: 26px;
+    color: #667eea;
+    margin-bottom: 25px;
+    padding: 15px 20px;
+    background: linear-gradient(90deg, #f0f4ff 0%, #ffffff 100%);
+    border-left: 5px solid #667eea;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* Table Cards */
+.table-item {
+    margin-bottom: 25px;
+    padding: 25px;
+    border: 2px solid #e8ecf3;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.table-item:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+    color: white;
+}
+
+.table-name {
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.table-name::before {
+    content: "🪑";
+    font-size: 24px;
+}
+
+.table-info {
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* Guest Lists */
+.guest-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.guest-list li {
+    padding: 12px 20px;
+    background: linear-gradient(90deg, #f8f9ff 0%, #ffffff 100%);
+    border-left: 3px solid #667eea;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: all 0.2s;
+}
+
+.guest-list li:hover {
+    background: linear-gradient(90deg, #f0f4ff 0%, #ffffff 100%);
+    transform: translateX(5px);
+}
+
+.guest-list li::before {
+    content: "👤";
+    margin-right: 10px;
+    opacity: 0.6;
+}
+
+.no-guests {
+    color: #95a5a6;
+    font-style: italic;
+    text-align: center;
+    padding: 30px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Unassigned Section */
+.unassigned-section {
+    margin-top: 50px;
+    padding: 30px;
+    background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+    border-radius: 12px;
+    border: 2px dashed #f5576c;
+}
+
+.unassigned-section h2 {
+    color: #f5576c;
+    border-left-color: #f5576c;
+}
+
+.unassigned-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 12px;
+}
+
+.unassigned-list li {
+    padding: 12px 20px;
+    background: white;
+    border-left: 3px solid #f5576c;
+    border-radius: 6px;
+    font-size: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.unassigned-list li::before {
+    content: "⚠️";
+    margin-right: 10px;
+}
+
+/* Action Buttons */
+.print-actions {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 12px;
+    z-index: 1000;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+    color: white;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(149, 165, 166, 0.4);
+}
+
+/* Print Styles */
+@media print {
+    .print-actions {
+        display: none !important;
+    }
+
+    .printable-seating-chart {
+        padding: 10mm;
+        margin: 0;
+    }
+
+    .table-item {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+
+    .print-header {
+        background: #667eea;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .summary-item {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .table-header {
+        background: #667eea;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

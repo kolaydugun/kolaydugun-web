@@ -1,0 +1,85 @@
+/* Budget Styles */
+.budget-header {
+    margin-bottom: 20px;
+}
+
+.budget-period-selector {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.budget-period-selector select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.budget-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-bar-container {
+    flex: 1;
+    height: 20px;
+    background: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #28a745, #20c997);
+    transition: width 0.3s ease;
+}
+
+.progress-bar.exceeded {
+    background: linear-gradient(90deg, #dc3545, #c82333);
+}
+
+.percentage {
+    font-weight: bold;
+    min-width: 60px;
+    text-align: right;
+}
+
+.percentage.exceeded {
+    color: #dc3545;
+}
+
+.budget-exceeded {
+    background-color: #fff3cd !important;
+}
+
+tr.budget-exceeded td {
+    border-left: 3px solid #ffc107;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+.status-badge.active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.inactive {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.inactive-row {
+    opacity: 0.6;
+}
+
+.text-center {
+    text-align: center;
+}

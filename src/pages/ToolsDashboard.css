@@ -1,0 +1,83 @@
+.tools-dashboard {
+    margin-top: 80px;
+}
+
+.tools-intro {
+    max-width: 600px;
+    margin-bottom: 3rem;
+    color: var(--color-text-light);
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.tool-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+.tool-card {
+    background: var(--color-bg-white);
+    padding: 2rem;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.tool-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.tool-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.tool-title {
+    margin-bottom: 0.5rem;
+    color: var(--color-text-dark);
+}
+
+.tool-desc {
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.tool-progress-container {
+    margin-top: auto;
+}
+
+.tool-progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-light);
+}
+
+.tool-progress-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: var(--color-bg-light);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.tool-progress-bar-fill {
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: 3px;
+    transition: width var(--transition-normal);
+}

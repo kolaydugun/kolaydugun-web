@@ -1,0 +1,249 @@
+.couple-messages-container {
+    display: flex;
+    height: 75vh;
+    min-height: 500px;
+    max-height: 800px;
+    max-width: 1400px;
+    margin: 20px auto;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.conversations-sidebar {
+    width: 300px;
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+}
+
+.conversations-sidebar h3 {
+    padding: 15px;
+    margin: 0;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f8f9fa;
+    font-size: 1rem;
+}
+
+.conversations-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.conversation-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+}
+
+.conversation-item:hover {
+    background: #f8f9fa;
+}
+
+.conversation-item.active {
+    background: #e3f2fd;
+    border-left: 3px solid #FF4081;
+    /* Pink */
+}
+
+.conversation-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    margin-right: 12px;
+}
+
+.conversation-info h4 {
+    margin: 0 0 3px 0;
+    font-size: 14px;
+    color: #333;
+    font-weight: 600;
+}
+
+.conversation-info p {
+    margin: 0;
+    font-size: 12px;
+    color: #666;
+}
+
+.chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.event-date {
+    font-size: 13px;
+    color: #888;
+}
+
+.messages-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+}
+
+.no-messages {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #999;
+}
+
+.message-bubble {
+    max-width: 70%;
+    margin-bottom: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    word-wrap: break-word;
+    position: relative;
+    font-size: 14px;
+}
+
+.message-bubble.sent {
+    background: #FF4081;
+    /* Pink for user/couple */
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 2px;
+}
+
+.message-bubble.received {
+    background: white;
+    color: #333;
+    margin-right: auto;
+    border-bottom-left-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.message-bubble p {
+    margin: 0 0 4px 0;
+}
+
+.message-time {
+    font-size: 10px;
+    opacity: 0.8;
+    display: block;
+    text-align: right;
+}
+
+.message-input-area {
+    display: flex;
+    padding: 15px 20px;
+    border-top: 1px solid #e0e0e0;
+    background: white;
+    gap: 10px;
+}
+
+.message-input-area input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 14px;
+    outline: none;
+}
+
+.message-input-area input:focus {
+    border-color: #FF4081;
+}
+
+.message-input-area button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: #FF4081;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.message-input-area button:hover:not(:disabled) {
+    background: #e91e63;
+}
+
+.message-input-area button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.empty-chat-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 18px;
+    color: #999;
+}
+
+.no-conversations {
+    padding: 30px 20px;
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    font-size: 16px;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .couple-messages-container {
+        flex-direction: column;
+        height: calc(100vh - 60px);
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .conversations-sidebar {
+        width: 100%;
+        height: 100%;
+        display: flex;
+    }
+
+    .chat-area {
+        display: none;
+        /* Need logic to toggle on mobile */
+    }
+
+    /* Simple toggle logic relies on JS class/state */
+}
