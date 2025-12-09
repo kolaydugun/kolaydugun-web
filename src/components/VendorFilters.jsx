@@ -185,22 +185,7 @@ const VendorFilters = ({ filters, onFilterChange, userLocation, onLocationReques
                 </select>
             </div>
 
-            <div className="filter-group">
-                <label className="filter-label">{t('filters.category') || 'Kategori'}</label>
-                <select
-                    className="filter-select"
-                    value={filters.category}
-                    onChange={(e) => handleChange('category', e.target.value)}
-                    aria-label="Filter by category"
-                >
-                    <option value="">{t('filters.all') || 'Tümü'}</option>
-                    {CATEGORIES.map(cat => {
-                        const manualTranslation = dictionary[getCategoryTranslationKey(cat)]?.[language];
-                        const label = manualTranslation || t(`categories.${getCategoryTranslationKey(cat)}`);
-                        return <option key={cat} value={cat}>{label}</option>;
-                    })}
-                </select>
-            </div>
+
 
             <div className="filter-group">
                 <label className="filter-label">{t('filters.city') || 'Şehir'}</label>
