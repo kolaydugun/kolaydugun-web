@@ -6,6 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LoadingSpinner from './components/LoadingSpinner';
 import SessionTracker from './components/SessionTracker';
 import MaintenanceCheck from './components/MaintenanceCheck';
+import FaviconManager from './components/FaviconManager';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -87,6 +88,7 @@ function App() {
                   <Navbar />
                   <div className="flex-grow">
                     <MaintenanceCheck />
+                    <FaviconManager />
                     <SessionTracker />
                     <Suspense fallback={<LoadingSpinner />}>
                       <Routes>

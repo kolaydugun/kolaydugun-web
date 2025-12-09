@@ -14,7 +14,8 @@ const AdminConfig = () => {
         hero_subtitle: { en: '', de: '', tr: '' },
         hero_image_url: '',
         og_image_url: '',
-        logo_url: '', // New field for Logo
+        logo_url: '',
+        favicon_url: '', // New field for Favicon
         social_media: { facebook: '', instagram: '', youtube: '', tiktok: '', twitter: '', linkedin: '' }
     });
     const [loading, setLoading] = useState(true);
@@ -63,6 +64,7 @@ const AdminConfig = () => {
                 hero_image_url: settingsData.hero_image_url || '',
                 og_image_url: settingsData.og_image_url || '',
                 logo_url: settingsData.logo_url || '',
+                favicon_url: settingsData.favicon_url || '',
                 social_media: settingsData.social_media || { facebook: '', instagram: '', youtube: '', tiktok: '', twitter: '', linkedin: '' }
             });
         }
@@ -103,6 +105,7 @@ const AdminConfig = () => {
                     hero_image_url: siteSettings.hero_image_url,
                     og_image_url: siteSettings.og_image_url,
                     logo_url: siteSettings.logo_url,
+                    favicon_url: siteSettings.favicon_url,
                     social_media: siteSettings.social_media,
                     updated_at: new Date()
                 })
@@ -182,6 +185,18 @@ const AdminConfig = () => {
                         <ImageUpload
                             currentImageUrl={siteSettings.og_image_url}
                             onUploadComplete={(url) => handleSettingChange('og_image_url', url)}
+                            folder="site-assets"
+                        />
+                    </div>
+
+                    <div className="config-item-group" style={{ marginTop: '20px' }}>
+                        <h3>Site İkonu (Favicon)</h3>
+                        <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '10px' }}>
+                            Tarayıcı sekmesinde görünen küçük ikon. (Önerilen: 32x32px PNG veya ICO)
+                        </p>
+                        <ImageUpload
+                            currentImageUrl={siteSettings.favicon_url}
+                            onUploadComplete={(url) => handleSettingChange('favicon_url', url)}
                             folder="site-assets"
                         />
                     </div>

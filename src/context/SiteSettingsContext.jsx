@@ -14,7 +14,8 @@ export const SiteSettingsProvider = ({ children }) => {
         hero_image_url: '',
         social_media: {},
         og_image_url: '', // New setting
-        logo_url: '' // New setting
+        logo_url: '', // New setting
+        favicon_url: '' // New setting
     });
     const [loading, setLoading] = useState(true);
 
@@ -32,7 +33,8 @@ export const SiteSettingsProvider = ({ children }) => {
                     hero_image_url: data.hero_image_url || '',
                     social_media: data.social_media || {},
                     og_image_url: data.og_image_url || '',
-                    logo_url: data.logo_url || ''
+                    logo_url: data.logo_url || '',
+                    favicon_url: data.favicon_url || ''
                 });
             }
         } catch (error) {
