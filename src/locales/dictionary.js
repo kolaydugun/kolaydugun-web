@@ -4940,7 +4940,7 @@ export const dictionary = {
         logout: { en: "Logout", de: "Abmelden", tr: "Çıkış Yap" },
         messages: { en: "Messages", de: "Nachrichten", tr: "Mesajlarım" },
         registerBtn: { en: "Sign Up", de: "Registrieren", tr: "Kayıt Ol" }
-    }
+    },
     schemas: {
         enstrumanlar_label: {
             en: "Instruments / Team Type",
