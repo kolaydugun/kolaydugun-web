@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLanguage } from '../context/LanguageContext';
+import { useSiteSettings } from '../context/SiteSettingsContext';
 
 const SEO = ({
     title,
@@ -12,9 +13,13 @@ const SEO = ({
     type = 'website'
 }) => {
     const { language } = useLanguage();
+    const { settings } = useSiteSettings() || { settings: {} }; // Safety fallback
+
     const siteName = 'KolayDugun.de';
     const defaultDescription = 'Find the best wedding vendors in Germany. Turkish & International weddings made easy.';
-    const defaultImage = 'https://kolaydugun.de/og-image.jpg'; // We should update this with a real URL later
+
+    // Use the uploaded OG image if available, otherwise use a default hardcoded one
+    const defaultImage = settings?.og_image_url || 'https://kolaydugun.de/og-image.jpg';
     const siteUrl = 'https://kolaydugun.de';
 
     const fullTitle = title ? `${title} | ${siteName}` : siteName;

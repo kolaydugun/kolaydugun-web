@@ -22,6 +22,7 @@ import { VendorProvider } from './context/VendorContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
 import { PlanningProvider } from './context/PlanningContext';
+import { SiteSettingsProvider } from './context/SiteSettingsContext';
 
 // Lazy load heavy dashboard components
 const VendorDashboard = lazy(() => import('./pages/VendorDashboard'));
@@ -77,146 +78,99 @@ import PrivacyBanner from './components/PrivacyBanner';
 function App() {
   return (
     <AuthProvider>
-      <VendorProvider>
-        <PlanningProvider>
-          <Router>
-            <div className="app">
-              <SessionTracker />
-              <MaintenanceCheck />
-              <Navbar />
-              <Suspense fallback={
-                <div className="section container" style={{ marginTop: '100px', display: 'flex', justifyContent: 'center' }}>
-                  <LoadingSpinner size="large" />
+      <LanguageProvider>
+        <SiteSettingsProvider>
+          <VendorProvider>
+            <PlanningProvider>
+              <Router>
+                <div className="flex flex-col min-h-screen">
+                  <Navbar />
+                  <div className="flex-grow">
+                    <MaintenanceCheck />
+                    <SessionTracker />
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <Routes>
+                        {/* Public Routes */}
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
+                        <Route path="/update-password" element={<UpdatePassword />} />
+                        <Route path="/pricing" element={<PricingPlans />} />
+                        <Route path="/checkout" element={<Checkout />} />
+                        <Route path="/vendors" element={<VendorList />} />
+                        <Route path="/vendors/:slug" element={<VendorDetail />} />
+                        <Route path="/vendor-landing" element={<VendorLanding />} />
+                        <Route path="/blog" element={<Blog />} />
+                        <Route path="/blog/:id" element={<BlogPost />} />
+                        <Route path="/faq" element={<FAQPage />} />
+                        <Route path="/contact" element={<LeadForm />} />
+                        <Route path="/weather" element={<Weather />} />
+                        <Route path="/:vendorSlug/website" element={<PublicWedding />} />
+                        <Route path="/examples/seating" element={<SeatingChart />} />
+                        <Route path="/examples/timeline" element={<Timeline />} />
+
+                        {/* Protected Routes */}
+                        <Route path="/dashboard/*" element={
+                          <ProtectedRoute>
+                            <UserDashboard />
+                          </ProtectedRoute>
+                        } />
+
+                        <Route path="/vendor-dashboard/*" element={
+                          <ProtectedRoute>
+                            <VendorDashboard />
+                          </ProtectedRoute>
+                        } />
+
+                        <Route path="/tools/*" element={
+                          <ProtectedRoute>
+                            <ToolsDashboard />
+                          </ProtectedRoute>
+                        } />
+
+                        {/* Admin Routes */}
+                        <Route path="/admin" element={
+                          <ProtectedRoute>
+                            <AdminLayout />
+                          </ProtectedRoute>
+                        }>
+                          <Route index element={<AdminDashboard />} />
+                          <Route path="vendors" element={<AdminVendors />} />
+                          <Route path="users" element={<AdminUsers />} />
+                          <Route path="leads" element={<AdminLeads />} />
+                          <Route path="config" element={<AdminConfig />} />
+                          <Route path="translations" element={<AdminTranslations />} />
+                          <Route path="categories" element={<AdminCategories />} />
+                          <Route path="blog" element={<AdminBlog />} />
+                          <Route path="pricing" element={<AdminPricing />} />
+                          <Route path="analytics" element={<AdminAnalytics />} />
+                          <Route path="reviews" element={<AdminReviews />} />
+                          <Route path="messages" element={<AdminMessages />} />
+                          <Route path="credits" element={<AdminCreditApproval />} />
+                          <Route path="pages" element={<AdminPages />} />
+                          <Route path="finance" element={<AdminFinance />} />
+                          <Route path="notifications" element={<AdminNotifications />} />
+                          <Route path="pages/:pageId" element={<AdminPageEdit />} />
+                          <Route path="comments" element={<AdminComments />} />
+                          <Route path="faq" element={<AdminFAQ />} />
+                          <Route path="messaging" element={<AdminMessaging />} />
+                        </Route>
+
+
+                        {/* Catch all */}
+                        <Route path="*" element={<Navigate to="/" replace />} />
+                      </Routes>
+                    </Suspense>
+                  </div>
+                  <Footer />
                 </div>
-              }>
-                <PrivacyBanner />
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route path="/update-password" element={<UpdatePassword />} />
-                  <Route path="/vendors" element={<VendorList />} />
-                  <Route path="/services" element={<VendorList />} /> {/* Alias for vendors */}
-                  <Route path="/vendors/:slug" element={<VendorDetail />} />
-
-                  <Route path="/blog" element={<Blog />} />
-                  <Route path="/blog/:slug" element={<BlogPost />} />
-                  <Route path="/faq" element={<FAQPage />} />
-                  <Route path="/vendor-register" element={<VendorLanding />} />
-                  <Route path="/tools" element={
-                    <ProtectedRoute allowedTypes={['couple', 'admin']}>
-                      <ToolsDashboard />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/tools/timeline" element={
-                    <ProtectedRoute allowedTypes={['couple', 'admin']}>
-                      <Timeline />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/tools/budget" element={
-                    <ProtectedRoute allowedTypes={['couple', 'admin']}>
-                      <BudgetPlanner />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/tools/weather" element={
-                    <ProtectedRoute allowedTypes={['couple', 'admin']}>
-                      <Weather />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/tools/website" element={
-                    <ProtectedRoute allowedTypes={['couple', 'admin']}>
-                      <WeddingWebsiteSetup />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/tools/seating" element={
-                    <ProtectedRoute allowedTypes={['couple', 'admin']}>
-                      <SeatingChart />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/tools/seating/print" element={
-                    <ProtectedRoute allowedTypes={['couple', 'admin']}>
-                      <PrintableSeatingChart />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/lead-form" element={<LeadForm />} />
-
-                  {/* Dynamic CMS Pages */}
-                  <Route path="/p/:slug" element={<DynamicPage />} />
-                  <Route path="/w/:slug" element={<PublicWedding />} />
-
-                  {/* Vendor Dashboard */}
-                  <Route path="/checkout" element={
-                    <ProtectedRoute allowedTypes={['vendor']}>
-                      <Checkout />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/vendor/dashboard" element={
-                    <ProtectedRoute allowedTypes={['vendor']}>
-                      <VendorDashboard />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/vendor/pricing" element={<PricingPlans />} />
-
-                  {/* Legal Pages - Dynamic */}
-                  {/* Route already defined above at line 137, but keeping one instance here for clarity if preferred, or just removing duplicates */}
-
-                  {/* User Dashboard */}
-                  <Route path="/user-dashboard" element={
-                    <ProtectedRoute allowedTypes={['couple']}>
-                      <UserDashboard />
-                    </ProtectedRoute>
-                  } />
-
-                  {/* Couple Messages */}
-                  <Route path="/messages" element={
-                    <ProtectedRoute allowedTypes={['couple', 'admin']}>
-                      <CoupleMessages />
-                    </ProtectedRoute>
-                  } />
-
-                  {/* Admin Routes */}
-                  <Route path="/admin" element={
-                    <ProtectedRoute allowedTypes={['admin']}>
-                      <AdminLayout />
-                    </ProtectedRoute>
-                  }>
-                    <Route index element={<AdminDashboard />} />
-                    <Route path="config" element={<AdminConfig />} />
-                    <Route path="pages" element={<AdminPages />} />
-                    <Route path="pages/new" element={<AdminPageEdit />} />
-                    <Route path="pages/new" element={<AdminPageEdit />} />
-                    <Route path="pages/edit/:id" element={<AdminPageEdit />} />
-                    <Route path="categories" element={<AdminCategoryManager />} />
-                    <Route path="faq" element={<AdminFAQ />} />
-                    <Route path="translations" element={<AdminTranslations />} />
-                    <Route path="blog" element={<AdminBlog />} />
-                    <Route path="vendors" element={<AdminVendors />} />
-                    <Route path="leads" element={<AdminLeads />} />
-                    <Route path="users" element={<AdminUsers />} />
-                    <Route path="credit-approval" element={<AdminCreditApproval />} />
-                    <Route path="pricing" element={<AdminPricing />} />
-                    <Route path="analytics" element={<AdminAnalytics />} />
-                    <Route path="reviews" element={<AdminReviews />} />
-                    <Route path="finance" element={<AdminFinance />} />
-                    <Route path="messages" element={<AdminMessages />} />
-                    <Route path="messaging" element={<AdminMessaging />} />
-                    <Route path="comments" element={<AdminComments />} />
-                    <Route path="notifications" element={<AdminNotifications />} />
-                  </Route>
-
-                  {/* User Routes */}
-                  <Route path="/notifications" element={<ProtectedRoute allowedTypes={['couple', 'admin', 'vendor']}><UserNotifications /></ProtectedRoute>} />
-
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes >
-              </Suspense >
-              <Footer />
-            </div >
-          </Router >
-        </PlanningProvider >
-      </VendorProvider >
-    </AuthProvider >
+              </Router>
+            </PlanningProvider>
+          </VendorProvider>
+        </SiteSettingsProvider>
+      </LanguageProvider>
+    </AuthProvider>
   );
 }
 

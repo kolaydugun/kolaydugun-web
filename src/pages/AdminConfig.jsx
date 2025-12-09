@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../supabaseClient';
 import { usePageTitle } from '../hooks/usePageTitle';
+import ImageUpload from '../components/ImageUpload';
 import './AdminConfig.css';
 
 const AdminConfig = () => {
@@ -12,6 +13,7 @@ const AdminConfig = () => {
         hero_title: { en: '', de: '', tr: '' },
         hero_subtitle: { en: '', de: '', tr: '' },
         hero_image_url: '',
+        og_image_url: '', // New field for OG Image
         social_media: { facebook: '', instagram: '', youtube: '', tiktok: '', twitter: '', linkedin: '' }
     });
     const [loading, setLoading] = useState(true);
@@ -30,6 +32,10 @@ const AdminConfig = () => {
         const { data: configData, error: configError } = await supabase
             .from('marketplace_config')
             .select('*');
+
+        if (!configData && !configError) {
+            // Handle empty case if needed
+        }
 
         if (!configError && configData) {
             const configObj = {};
@@ -54,6 +60,7 @@ const AdminConfig = () => {
                 hero_title: settingsData.hero_title || { en: '', de: '', tr: '' },
                 hero_subtitle: settingsData.hero_subtitle || { en: '', de: '', tr: '' },
                 hero_image_url: settingsData.hero_image_url || '',
+                og_image_url: settingsData.og_image_url || '',
                 social_media: settingsData.social_media || { facebook: '', instagram: '', youtube: '', tiktok: '', twitter: '', linkedin: '' }
             });
         }
@@ -92,13 +99,14 @@ const AdminConfig = () => {
                     hero_title: siteSettings.hero_title,
                     hero_subtitle: siteSettings.hero_subtitle,
                     hero_image_url: siteSettings.hero_image_url,
+                    og_image_url: siteSettings.og_image_url,
                     social_media: siteSettings.social_media,
                     updated_at: new Date()
                 })
                 .eq('id', 1);
 
             if (error) throw error;
-            alert('✅ Anasayfa ayarları güncellendi!');
+            alert('✅ Site ayarları güncellendi!');
         } catch (err) {
             console.error('Error updating site settings:', err);
             alert('Hata: ' + err.message);
@@ -156,6 +164,25 @@ const AdminConfig = () => {
             <div className="admin-config-header">
                 <h1>Sistem Ayarları</h1>
                 <p>Pazaryeri konfigürasyonunu yönetin</p>
+            </div>
+
+            {/* Global Site Images */}
+            <div className="config-section">
+                <h2>🖼️ Site Görselleri</h2>
+                <div className="config-card">
+                    <div className="config-item-group">
+                        <h3>Varsayılan Sosyal Medya Resmi (OG Image)</h3>
+                        <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '10px' }}>
+                            WhatsApp, Facebook vb. paylaşımlarda firma resmi yoksa bu logo/resim görünür.
+                            (Önerilen boyut: 1200x630px)
+                        </p>
+                        <ImageUpload
+                            currentImageUrl={siteSettings.og_image_url}
+                            onUploadComplete={(url) => handleSettingChange('og_image_url', url)}
+                            folder="site-assets"
+                        />
+                    </div>
+                </div>
             </div>
 
             {/* Homepage Settings */}
@@ -222,21 +249,26 @@ const AdminConfig = () => {
                     </div>
 
                     <div className="config-item-group" style={{ marginTop: '20px' }}>
-                        <h3>Arkaplan Görseli (URL)</h3>
-                        <input
-                            type="text"
-                            value={siteSettings.hero_image_url || ''}
-                            onChange={(e) => handleSettingChange('hero_image_url', e.target.value)}
-                            placeholder="https://..."
-                            style={{ width: '100%' }}
+                        <h3>Arkaplan Görseli</h3>
+                        <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '10px' }}>
+                            Anasayfa üst (banner) alanında görünen büyük resim.
+                        </p>
+                        <ImageUpload
+                            currentImageUrl={siteSettings.hero_image_url}
+                            onUploadComplete={(url) => handleSettingChange('hero_image_url', url)}
+                            folder="site-assets"
                         />
-                        {siteSettings.hero_image_url && (
-                            <img
-                                src={siteSettings.hero_image_url}
-                                alt="Preview"
-                                style={{ marginTop: '10px', maxHeight: '150px', borderRadius: '8px' }}
+                        {/* Fallback manual input if needed, or remove */}
+                        <div style={{ marginTop: '10px' }}>
+                            <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.85rem' }}>Veya URL girin:</label>
+                            <input
+                                type="text"
+                                value={siteSettings.hero_image_url || ''}
+                                onChange={(e) => handleSettingChange('hero_image_url', e.target.value)}
+                                placeholder="https://..."
+                                style={{ width: '100%' }}
                             />
-                        )}
+                        </div>
                     </div>
 
                     <button
@@ -245,7 +277,7 @@ const AdminConfig = () => {
                         onClick={updateSiteSettings}
                         disabled={saving}
                     >
-                        {saving ? 'Kaydediliyor...' : 'Anasayfa Ayarlarını Kaydet'}
+                        {saving ? 'Kaydediliyor...' : 'Tüm Site Ayarlarını Kaydet'}
                     </button>
                 </div>
             </div>
@@ -258,60 +290,26 @@ const AdminConfig = () => {
                         Sosyal medya butonlarının görünmesi için ilgili platformun linkini girin. Boş bırakırsanız buton görünmez.
                     </p>
                     <div className="config-item-group">
-                        <div className="input-group">
-                            <label><span className="icon">📘</span> Facebook</label>
-                            <input
-                                type="text"
-                                value={siteSettings.social_media?.facebook || ''}
-                                onChange={(e) => handleSettingChange('social_media', { ...siteSettings.social_media, facebook: e.target.value })}
-                                placeholder="https://facebook.com/..."
-                            />
-                        </div>
-                        <div className="input-group">
-                            <label><span className="icon">📷</span> Instagram</label>
-                            <input
-                                type="text"
-                                value={siteSettings.social_media?.instagram || ''}
-                                onChange={(e) => handleSettingChange('social_media', { ...siteSettings.social_media, instagram: e.target.value })}
-                                placeholder="https://instagram.com/..."
-                            />
-                        </div>
-                        <div className="input-group">
-                            <label><span className="icon">▶️</span> YouTube</label>
-                            <input
-                                type="text"
-                                value={siteSettings.social_media?.youtube || ''}
-                                onChange={(e) => handleSettingChange('social_media', { ...siteSettings.social_media, youtube: e.target.value })}
-                                placeholder="https://youtube.com/..."
-                            />
-                        </div>
-                        <div className="input-group">
-                            <label><span className="icon">🎵</span> TikTok</label>
-                            <input
-                                type="text"
-                                value={siteSettings.social_media?.tiktok || ''}
-                                onChange={(e) => handleSettingChange('social_media', { ...siteSettings.social_media, tiktok: e.target.value })}
-                                placeholder="https://tiktok.com/..."
-                            />
-                        </div>
-                        <div className="input-group">
-                            <label><span className="icon">🐦</span> Twitter / X</label>
-                            <input
-                                type="text"
-                                value={siteSettings.social_media?.twitter || ''}
-                                onChange={(e) => handleSettingChange('social_media', { ...siteSettings.social_media, twitter: e.target.value })}
-                                placeholder="https://twitter.com/..."
-                            />
-                        </div>
-                        <div className="input-group">
-                            <label><span className="icon">💼</span> LinkedIn</label>
-                            <input
-                                type="text"
-                                value={siteSettings.social_media?.linkedin || ''}
-                                onChange={(e) => handleSettingChange('social_media', { ...siteSettings.social_media, linkedin: e.target.value })}
-                                placeholder="https://linkedin.com/..."
-                            />
-                        </div>
+                        {['facebook', 'instagram', 'youtube', 'tiktok', 'twitter', 'linkedin'].map(platform => (
+                            <div className="input-group" key={platform}>
+                                <label style={{ textTransform: 'capitalize' }}>
+                                    <span className="icon">
+                                        {platform === 'facebook' && '📘'}
+                                        {platform === 'instagram' && '📷'}
+                                        {platform === 'youtube' && '▶️'}
+                                        {platform === 'tiktok' && '🎵'}
+                                        {platform === 'twitter' && '🐦'}
+                                        {platform === 'linkedin' && '💼'}
+                                    </span> {platform}
+                                </label>
+                                <input
+                                    type="text"
+                                    value={siteSettings.social_media?.[platform] || ''}
+                                    onChange={(e) => handleSettingChange('social_media', { ...siteSettings.social_media, [platform]: e.target.value })}
+                                    placeholder={`https://${platform}.com/...`}
+                                />
+                            </div>
+                        ))}
                     </div>
 
                     <button
@@ -450,3 +448,4 @@ const AdminConfig = () => {
 };
 
 export default AdminConfig;
+
