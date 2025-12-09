@@ -13,7 +13,8 @@ export const SiteSettingsProvider = ({ children }) => {
         hero_subtitle: { en: '', de: '', tr: '' },
         hero_image_url: '',
         social_media: {},
-        og_image_url: '' // New setting
+        og_image_url: '', // New setting
+        logo_url: '' // New setting
     });
     const [loading, setLoading] = useState(true);
 
@@ -30,7 +31,8 @@ export const SiteSettingsProvider = ({ children }) => {
                     hero_subtitle: data.hero_subtitle || { en: '', de: '', tr: '' },
                     hero_image_url: data.hero_image_url || '',
                     social_media: data.social_media || {},
-                    og_image_url: data.og_image_url || ''
+                    og_image_url: data.og_image_url || '',
+                    logo_url: data.logo_url || ''
                 });
             }
         } catch (error) {

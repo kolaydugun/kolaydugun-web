@@ -7,7 +7,10 @@ import LanguageSwitcher from './LanguageSwitcher';
 import NotificationBell from './NotificationBell';
 import './Navbar.css';
 
+import { useSiteSettings } from '../context/SiteSettingsContext';
+
 const Navbar = () => {
+    const { settings } = useSiteSettings() || { settings: {} };
     const { t } = useLanguage();
     const { user, logout } = useAuth();
     const navigate = useNavigate();
@@ -38,7 +41,15 @@ const Navbar = () => {
         <nav className="navbar">
             <div className="container navbar-container">
                 <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-                    KolayDugun.de
+                    {settings?.logo_url ? (
+                        <img
+                            src={settings.logo_url}
+                            alt="KolayDugun.de"
+                            style={{ height: '40px', objectFit: 'contain' }}
+                        />
+                    ) : (
+                        'KolayDugun.de'
+                    )}
                 </Link>
 
                 <button className="hamburger-btn" onClick={toggleMobileMenu} aria-label="Toggle menu">
@@ -48,11 +59,11 @@ const Navbar = () => {
                 </button>
 
                 <div className={`navbar-links ${isMobileMenuOpen ? 'active' : ''}`}>
-                    <Link to="/services" className="navbar-link" onClick={closeMobileMenu}>{t('nav.services')}</Link>
+                    <Link to="/vendors" className="navbar-link" onClick={closeMobileMenu}>{t('nav.services')}</Link>
                     <Link to="/blog" className="navbar-link" onClick={closeMobileMenu}>Blog</Link>
 
                     <Link to="/tools" className="navbar-link" onClick={closeMobileMenu}>{t('nav.tools')}</Link>
-                    <Link to="/vendor-register" className="navbar-link" onClick={closeMobileMenu}>{t('nav.vendorJoin')}</Link>
+                    <Link to="/vendor-landing" className="navbar-link" onClick={closeMobileMenu}>{t('nav.vendorJoin')}</Link>
 
                     {/* Mobile-only auth/user links */}
                     <div className="mobile-auth-links">

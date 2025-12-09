@@ -13,7 +13,8 @@ const AdminConfig = () => {
         hero_title: { en: '', de: '', tr: '' },
         hero_subtitle: { en: '', de: '', tr: '' },
         hero_image_url: '',
-        og_image_url: '', // New field for OG Image
+        og_image_url: '',
+        logo_url: '', // New field for Logo
         social_media: { facebook: '', instagram: '', youtube: '', tiktok: '', twitter: '', linkedin: '' }
     });
     const [loading, setLoading] = useState(true);
@@ -61,6 +62,7 @@ const AdminConfig = () => {
                 hero_subtitle: settingsData.hero_subtitle || { en: '', de: '', tr: '' },
                 hero_image_url: settingsData.hero_image_url || '',
                 og_image_url: settingsData.og_image_url || '',
+                logo_url: settingsData.logo_url || '',
                 social_media: settingsData.social_media || { facebook: '', instagram: '', youtube: '', tiktok: '', twitter: '', linkedin: '' }
             });
         }
@@ -98,6 +100,10 @@ const AdminConfig = () => {
                 .update({
                     hero_title: siteSettings.hero_title,
                     hero_subtitle: siteSettings.hero_subtitle,
+                    hero_image_url: siteSettings.hero_image_url,
+                    og_image_url: siteSettings.og_image_url,
+                    logo_url: siteSettings.logo_url,
+                    social_media: siteSettings.social_media
                     hero_image_url: siteSettings.hero_image_url,
                     og_image_url: siteSettings.og_image_url,
                     social_media: siteSettings.social_media,
