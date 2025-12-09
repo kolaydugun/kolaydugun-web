@@ -4982,6 +4982,23 @@ export const dictionary = {
             de: "Kanun (Zither)",
             tr: "Kanun"
         },
+        music_genres_label: {
+            en: "Music Genres",
+            de: "Musikrichtungen",
+            tr: "Müzik Türleri"
+        },
+        genre_pop: { en: "Pop", de: "Pop", tr: "Pop" },
+        genre_turkish_pop: { en: "Turkish Pop", de: "Türkisch Pop", tr: "Türkçe Pop" },
+        genre_halay: { en: "Halay / Folk", de: "Halay / Volksmusik", tr: "Halay / Oyun Havası" },
+        genre_arabesque: { en: "Arabesque", de: "Arabesque", tr: "Arabesk" },
+        genre_classical: { en: "Classical", de: "Klassik", tr: "Klasik" },
+        genre_jazz: { en: "Jazz", de: "Jazz", tr: "Caz" },
+        genre_rock: { en: "Rock", de: "Rock", tr: "Rock" },
+        genre_folk: { en: "Folk", de: "Volksmusik", tr: "Halk Müziği" },
+        instr_dj: { en: "DJ", de: "DJ", tr: "DJ" },
+        instr_quartet: { en: "Quartet", de: "Quartett", tr: "Quartet" },
+        instr_trio: { en: "Trio", de: "Trio", tr: "Trio" },
+        instr_bando: { en: "Marching Band", de: "Blaskapelle", tr: "Bando" },
         // Photographer Schema Translations
         photo_services_label: {
             en: "Services Offered",

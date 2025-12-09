@@ -78,6 +78,23 @@ const VendorFilters = ({ filters, onFilterChange, userLocation, onLocationReques
                 />
             </div>
 
+            <div className="filter-group">
+                <label className="filter-label">{t('filters.category') || 'Kategori'}</label>
+                <select
+                    className="filter-select"
+                    value={filters.category}
+                    onChange={(e) => handleChange('category', e.target.value)}
+                    aria-label="Filter by category"
+                >
+                    <option value="">{t('filters.all') || 'Tümü'}</option>
+                    {CATEGORIES.map(cat => {
+                        const manualTranslation = dictionary[getCategoryTranslationKey(cat)]?.[language];
+                        const label = manualTranslation || t(`categories.${getCategoryTranslationKey(cat)}`);
+                        return <option key={cat} value={cat}>{label}</option>;
+                    })}
+                </select>
+            </div>
+
             {/* Dynamic Filters from Schema */}
             {filters.category && dynamicSchema.length > 0 && (
                 <div className="dynamic-filters-section" style={{ borderBottom: '1px solid #eee', marginBottom: '15px', paddingBottom: '15px' }}>
