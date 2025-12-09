@@ -103,9 +103,6 @@ const AdminConfig = () => {
                     hero_image_url: siteSettings.hero_image_url,
                     og_image_url: siteSettings.og_image_url,
                     logo_url: siteSettings.logo_url,
-                    social_media: siteSettings.social_media
-                    hero_image_url: siteSettings.hero_image_url,
-                    og_image_url: siteSettings.og_image_url,
                     social_media: siteSettings.social_media,
                     updated_at: new Date()
                 })
