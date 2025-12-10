@@ -74,7 +74,7 @@ const Hero = ({ title, subtitle, backgroundImage }) => {
                     <button
                         type="button"
                         className="hero-cta-button"
-                        onClick={() => navigate('/lead-form')}
+                        onClick={() => navigate('/contact')}
                     >
                         <span className="cta-icon">✨</span>
                         <span className="cta-text">{t('hero.getFreeQuote')}</span>
