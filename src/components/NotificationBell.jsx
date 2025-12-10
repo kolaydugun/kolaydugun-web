@@ -215,7 +215,7 @@ const NotificationBell = () => {
                                     const leadId = item.related_lead_id || item.notification?.related_lead_id;
                                     linkTo = leadId ? `/vendor/dashboard?tab=leads&leadId=${leadId}` : '/vendor/dashboard?tab=leads';
                                 } else if (notifType === 'contact_form' || (notifType === 'system' && notifTitle.includes('İletişim Mesajı'))) {
-                                    linkTo = '/admin/messages?tab=contact';
+                                    linkTo = '/admin/leads';
                                 }
 
                                 // Title Cleanup

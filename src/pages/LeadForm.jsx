@@ -69,8 +69,11 @@ const LeadForm = () => {
         setLoading(true);
 
         try {
+            // Create a clean copy of formData excluding internal fields like _error
+            const { _error, ...cleanFormData } = formData;
+
             const leadData = {
-                ...formData,
+                ...cleanFormData,
                 user_id: user?.id || null,
                 budget_min: parseFloat(formData.budget_min) || 0,
                 budget_max: parseFloat(formData.budget_max) || 0,
@@ -135,7 +138,11 @@ const LeadForm = () => {
             setTimeout(() => setSuccess(false), 5000);
         } catch (error) {
             console.error('Lead oluşturma hatası:', error);
-            alert('❌ ' + (t('leadForm.error') || 'Bir hata oluştu: ' + error.message));
+            // Show error in UI instead of alert
+            setSuccess(false);
+            const errorMsg = error.message || 'Bir hata oluştu';
+            // Set a temporary error state to display to the user
+            setFormData(prev => ({ ...prev, _error: errorMsg }));
         } finally {
             setLoading(false);
         }

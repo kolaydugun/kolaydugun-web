@@ -48,19 +48,30 @@ const AdminLeads = () => {
         try {
             const { error } = await supabase
                 .from('leads')
-                .update({ admin_notes: notes })
-                .eq('id', leadId)
-                .select();
+                .update({ status: newStatus })
+                .eq('id', leadId);
 
-            if (error) {
-                console.error('Supabase error updating notes:', error);
-                throw error;
-            }
+            if (error) throw error;
 
-            console.log('Notes updated successfully:', data);
+            console.log('Status updated successfully');
 
             // Update local state
-            setLeads(leads.map(l => l.id === leadId ? { ...l, admin_notes: notes } : l));
+            setLeads(leads.map(l => l.id === leadId ? { ...l, status: newStatus } : l));
+
+        } catch (error) {
+            console.error('Error updating status:', error);
+            alert('Durum güncellenemedi: ' + error.message);
+        }
+    };
+
+    const updateAdminNotes = async (leadId, notes) => {
+        try {
+            const { error } = await supabase
+                .from('leads')
+                .update({ admin_notes: notes })
+                .eq('id', leadId);
+
+            if (error) throw error;
 
             // Show saved indicator
             setSavedNotes(prev => ({ ...prev, [leadId]: true }));
@@ -70,14 +81,21 @@ const AdminLeads = () => {
 
         } catch (error) {
             console.error('Error updating notes:', error);
-            alert('Hata: Not kaydedilemedi. ' + error.message);
+            alert('Not kaydedilemedi: ' + error.message);
         }
     };
 
-    const handleDelete = async (leadId) => {
-        // Direct delete without confirmation dialog to avoid interaction issues
-        // if (!window.confirm('Bu talebi silmek istediğinize emin misiniz?')) return;
+    const [deleteConfirm, setDeleteConfirm] = useState(null); // ID of lead being confirmed
 
+    const handleDeleteClick = (leadId) => {
+        setDeleteConfirm(leadId);
+    };
+
+    const cancelDelete = () => {
+        setDeleteConfirm(null);
+    };
+
+    const confirmDelete = async (leadId) => {
         try {
             const { data, error } = await supabase.rpc('delete_lead_admin', { lead_id: leadId });
 
@@ -88,12 +106,14 @@ const AdminLeads = () => {
             }
 
             if (data && data.success === false) {
+                // Determine if it is a constraint error or just generic
                 alert('Silme başarısız: ' + (data.error || 'Bilinmeyen hata'));
                 return;
             }
 
+            // Success
             setLeads(leads.filter(l => l.id !== leadId));
-            alert('✅ Talep silindi.');
+            setDeleteConfirm(null);
 
         } catch (error) {
             console.error('Error deleting lead:', error);
@@ -207,14 +227,35 @@ const AdminLeads = () => {
                                         </div>
                                     </td>
                                     <td style={{ textAlign: 'center' }}>
-                                        <button
-                                            onClick={() => handleDelete(lead.id)}
-                                            className="btn-icon delete"
-                                            title="Sil"
-                                            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}
-                                        >
-                                            🗑️
-                                        </button>
+                                        {deleteConfirm === lead.id ? (
+                                            <div style={{ display: 'flex', gap: '5px', justifyContent: 'center' }}>
+                                                <button
+                                                    onClick={() => confirmDelete(lead.id)}
+                                                    className="btn-icon confirm-delete"
+                                                    title="Onayla"
+                                                    style={{ background: '#ef4444', color: 'white', border: 'none', borderRadius: '4px', padding: '4px 8px', cursor: 'pointer' }}
+                                                >
+                                                    Sil
+                                                </button>
+                                                <button
+                                                    onClick={cancelDelete}
+                                                    className="btn-icon cancel-delete"
+                                                    title="İptal"
+                                                    style={{ background: '#e5e7eb', color: '#374151', border: 'none', borderRadius: '4px', padding: '4px 8px', cursor: 'pointer' }}
+                                                >
+                                                    İptal
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <button
+                                                onClick={() => handleDeleteClick(lead.id)}
+                                                className="btn-icon delete"
+                                                title="Sil"
+                                                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}
+                                            >
+                                                🗑️
+                                            </button>
+                                        )}
                                     </td>
                                 </tr>
                             ))}
