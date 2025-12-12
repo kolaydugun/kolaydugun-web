@@ -132,6 +132,7 @@ function App() {
                         <Route path="/blog" element={<Blog />} />
                         <Route path="/blog/:slug" element={<BlogPost />} />
                         <Route path="/faq" element={<FAQPage />} />
+                        <Route path="/p/:slug" element={<DynamicPage />} />
                         <Route path="/contact" element={<LeadForm />} />
                         <Route path="/weather" element={<Weather />} />
                         <Route path="/:vendorSlug/website" element={<PublicWedding />} />
