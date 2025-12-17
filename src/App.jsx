@@ -8,6 +8,7 @@ import SessionTracker from './components/SessionTracker';
 import MaintenanceCheck from './components/MaintenanceCheck';
 import FaviconManager from './components/FaviconManager';
 import ScrollToTop from './components/ScrollToTop';
+import MobileBottomNav from './components/MobileBottomNav';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -146,6 +147,7 @@ function App() {
               <Router>
                 <ScrollToTop />
                 <div className="flex flex-col min-h-screen">
+                  <MobileBottomNav />
                   <Navbar />
                   <div className="flex-grow">
                     <MaintenanceCheck />

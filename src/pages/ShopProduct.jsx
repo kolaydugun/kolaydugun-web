@@ -792,6 +792,18 @@ const ShopProduct = () => {
                     </div>
                 )}
             </div>
+            {/* Mobile Sticky CTA Footer */}
+            <div className="mobile-sticky-cta-footer lg:hidden">
+                <div className="sticky-cta-container">
+                    <div className="sticky-cta-price">
+                        <span className="sticky-price-currency">€</span>
+                        <span className="sticky-price-amount">{product.price}</span>
+                    </div>
+                    <button className="sticky-cta-button" onClick={handleCta}>
+                        {isAmazon ? `Amazon'da Gör` : t.contact}
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };
