@@ -42,6 +42,7 @@
     background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
     padding: 2rem 0 4rem;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x: hidden;
 }
 
 .shop-product-page-premium .container {
@@ -1074,6 +1075,7 @@
 
 /* ========= MOBILE RESPONSIVE ========= */
 @media (max-width: 768px) {
+
     /* Page Container */
     .shop-product-page-premium {
         padding: 0.5rem 0 2rem !important;
@@ -1326,6 +1328,7 @@
 
 /* Extra small devices */
 @media (max-width: 400px) {
+
     .main-image-premium,
     .image-placeholder-premium {
         height: 240px !important;
