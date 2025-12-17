@@ -1,0 +1,178 @@
+.mobile-app-showcase {
+    padding: 100px 0;
+    background: linear-gradient(135deg, #fdfcfd 0%, #fef9fc 100%);
+    overflow: hidden;
+    position: relative;
+}
+
+.showcase-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.badge {
+    background: rgba(139, 34, 82, 0.1);
+    color: #8B2252;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    display: inline-block;
+}
+
+.showcase-content h2 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    line-height: 1.2;
+    margin-bottom: 24px;
+}
+
+.showcase-content p {
+    font-size: 1.15rem;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.feature-list {
+    display: grid;
+    gap: 30px;
+}
+
+.feature-item {
+    display: flex;
+    gap: 20px;
+}
+
+.feature-icon {
+    width: 48px;
+    height: 48px;
+    background: white;
+    box-shadow: 0 8px 20px rgba(139, 34, 82, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8B2252;
+    flex-shrink: 0;
+}
+
+.feature-item h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.feature-item p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #777;
+}
+
+/* Mockup Image */
+.showcase-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.mockup-container {
+    width: 100%;
+    max-width: 450px;
+    /* Mockup is already a full device */
+    position: relative;
+    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.15));
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mockup-container:hover {
+    transform: translateY(-10px) rotate(-1deg);
+}
+
+.app-mockup-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.floating-elements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.float-card {
+    position: absolute;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(139, 34, 82, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8B2252;
+    z-index: 2;
+}
+
+.card-1 {
+    top: 20%;
+    left: 0%;
+    animation: float 4s ease-in-out infinite;
+}
+
+.card-2 {
+    bottom: 30%;
+    right: 0%;
+    animation: float 4s ease-in-out infinite 2s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@media (max-width: 1024px) {
+    .showcase-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 60px;
+    }
+
+    .badge {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .showcase-content h2 {
+        font-size: 2.2rem;
+    }
+
+    .feature-item {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .feature-list {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .mockup-container {
+        max-width: 320px;
+        margin: 0 auto;
+    }
+}

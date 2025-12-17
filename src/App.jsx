@@ -9,6 +9,7 @@ import MaintenanceCheck from './components/MaintenanceCheck';
 import FaviconManager from './components/FaviconManager';
 import ScrollToTop from './components/ScrollToTop';
 import MobileBottomNav from './components/MobileBottomNav';
+import SmartAppBanner from './components/SmartAppBanner';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -127,6 +128,8 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
 
+import { PWAInstallProvider } from './context/PWAInstallContext';
+
 function App() {
   // Initialize AOS
   useEffect(() => {
@@ -141,207 +144,210 @@ function App() {
   return (
     <AuthProvider>
       <LanguageProvider>
-        <SiteSettingsProvider>
-          <VendorProvider>
-            <PlanningProvider>
-              <Router>
-                <ScrollToTop />
-                <div className="flex flex-col min-h-screen">
-                  <MobileBottomNav />
-                  <Navbar />
-                  <div className="flex-grow">
-                    <MaintenanceCheck />
-                    <FaviconManager />
-                    <SessionTracker />
-                    <Suspense fallback={<LoadingSpinner />}>
-                      <Routes>
-                        {/* Public Routes */}
-                        <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/forgot-password" element={<ForgotPassword />} />
-                        <Route path="/update-password" element={<UpdatePassword />} />
-                        <Route path="/pricing" element={<PricingPlans />} />
-                        <Route path="/checkout" element={<Checkout />} />
-                        <Route path="/vendors" element={<VendorList />} />
-                        <Route path="/vendors/:slug" element={<VendorDetail />} />
-                        <Route path="/vendor-landing" element={<VendorLanding />} />
-                        <Route path="/tedarikci-basvuru" element={<VendorLanding />} />
-                        <Route path="/blog" element={<Blog />} />
-                        <Route path="/blog/:slug" element={<BlogPost />} />
-                        <Route path="/faq" element={<FAQPage />} />
+        <PWAInstallProvider>
+          <SiteSettingsProvider>
+            <VendorProvider>
+              <PlanningProvider>
+                <Router>
+                  <ScrollToTop />
+                  <SmartAppBanner />
+                  <div className="flex flex-col min-h-screen">
+                    <MobileBottomNav />
+                    <Navbar />
+                    <div className="flex-grow">
+                      <MaintenanceCheck />
+                      <FaviconManager />
+                      <SessionTracker />
+                      <Suspense fallback={<LoadingSpinner />}>
+                        <Routes>
+                          {/* Public Routes */}
+                          <Route path="/" element={<Home />} />
+                          <Route path="/login" element={<Login />} />
+                          <Route path="/register" element={<Register />} />
+                          <Route path="/forgot-password" element={<ForgotPassword />} />
+                          <Route path="/update-password" element={<UpdatePassword />} />
+                          <Route path="/pricing" element={<PricingPlans />} />
+                          <Route path="/checkout" element={<Checkout />} />
+                          <Route path="/vendors" element={<VendorList />} />
+                          <Route path="/vendors/:slug" element={<VendorDetail />} />
+                          <Route path="/vendor-landing" element={<VendorLanding />} />
+                          <Route path="/tedarikci-basvuru" element={<VendorLanding />} />
+                          <Route path="/blog" element={<Blog />} />
+                          <Route path="/blog/:slug" element={<BlogPost />} />
+                          <Route path="/faq" element={<FAQPage />} />
 
-                        {/* Language-prefixed Shop Routes with localized paths */}
-                        {/* German: /de/shop/produkt/, /de/shop/kategorie/ */}
-                        <Route path="/de/shop" element={<Shop />} />
-                        <Route path="/de/shop/produkt/:id" element={<ShopProduct />} />
-                        <Route path="/de/shop/kategorie/:slug" element={<ShopCategory />} />
+                          {/* Language-prefixed Shop Routes with localized paths */}
+                          {/* German: /de/shop/produkt/, /de/shop/kategorie/ */}
+                          <Route path="/de/shop" element={<Shop />} />
+                          <Route path="/de/shop/produkt/:id" element={<ShopProduct />} />
+                          <Route path="/de/shop/kategorie/:slug" element={<ShopCategory />} />
 
-                        {/* Turkish: /tr/shop/urun/, /tr/shop/kategori/ */}
-                        <Route path="/tr/shop" element={<Shop />} />
-                        <Route path="/tr/shop/urun/:id" element={<ShopProduct />} />
-                        <Route path="/tr/shop/kategori/:slug" element={<ShopCategory />} />
+                          {/* Turkish: /tr/shop/urun/, /tr/shop/kategori/ */}
+                          <Route path="/tr/shop" element={<Shop />} />
+                          <Route path="/tr/shop/urun/:id" element={<ShopProduct />} />
+                          <Route path="/tr/shop/kategori/:slug" element={<ShopCategory />} />
 
-                        {/* English: /en/shop/product/, /en/shop/category/ */}
-                        <Route path="/en/shop" element={<Shop />} />
-                        <Route path="/en/shop/product/:id" element={<ShopProduct />} />
-                        <Route path="/en/shop/category/:slug" element={<ShopCategory />} />
+                          {/* English: /en/shop/product/, /en/shop/category/ */}
+                          <Route path="/en/shop" element={<Shop />} />
+                          <Route path="/en/shop/product/:id" element={<ShopProduct />} />
+                          <Route path="/en/shop/category/:slug" element={<ShopCategory />} />
 
-                        {/* Default Shop Routes (fallback) */}
-                        <Route path="/shop" element={<Shop />} />
-                        <Route path="/shop/basvuru" element={<ShopApplication />} />
-                        <Route path="/shop/urun/:id" element={<ShopProduct />} />
-                        <Route path="/shop/kategori/:slug" element={<ShopCategory />} />
-                        <Route path="/shop/magaza/:slug" element={<ShopStorefront />} />
-                        <Route path="/shop/:slug" element={<ShopCategory />} />
-                        <Route path="/p/:slug" element={<DynamicPage />} />
-                        <Route path="/contact" element={<LeadForm />} />
-                        <Route path="/weather" element={<Weather />} />
-                        <Route path="/w/:slug" element={<PublicWedding />} />
-                        <Route path="/:vendorSlug/website" element={<PublicWedding />} />
-                        <Route path="/examples/seating" element={<SeatingChart />} />
-                        <Route path="/examples/timeline" element={<Timeline />} />
+                          {/* Default Shop Routes (fallback) */}
+                          <Route path="/shop" element={<Shop />} />
+                          <Route path="/shop/basvuru" element={<ShopApplication />} />
+                          <Route path="/shop/urun/:id" element={<ShopProduct />} />
+                          <Route path="/shop/kategori/:slug" element={<ShopCategory />} />
+                          <Route path="/shop/magaza/:slug" element={<ShopStorefront />} />
+                          <Route path="/shop/:slug" element={<ShopCategory />} />
+                          <Route path="/p/:slug" element={<DynamicPage />} />
+                          <Route path="/contact" element={<LeadForm />} />
+                          <Route path="/weather" element={<Weather />} />
+                          <Route path="/w/:slug" element={<PublicWedding />} />
+                          <Route path="/:vendorSlug/website" element={<PublicWedding />} />
+                          <Route path="/examples/seating" element={<SeatingChart />} />
+                          <Route path="/examples/timeline" element={<Timeline />} />
 
-                        {/* Community / Forum Routes */}
-                        <Route path="/community" element={<CommunityLayout />}>
-                          <Route index element={<CommunityHome />} />
-                          <Route path="category/:categorySlug" element={<CommunityHome />} /> {/* Added Category Route using same Home component */}
-                          <Route path="ask" element={<CommunityAsk />} />
-                          <Route path="topic/:slug" element={<CommunityTopicDetail />} />
-                          <Route path="user/:userId" element={<UserProfile />} />
-                        </Route>
+                          {/* Community / Forum Routes */}
+                          <Route path="/community" element={<CommunityLayout />}>
+                            <Route index element={<CommunityHome />} />
+                            <Route path="category/:categorySlug" element={<CommunityHome />} /> {/* Added Category Route using same Home component */}
+                            <Route path="ask" element={<CommunityAsk />} />
+                            <Route path="topic/:slug" element={<CommunityTopicDetail />} />
+                            <Route path="user/:userId" element={<UserProfile />} />
+                          </Route>
 
-                        {/* Protected Routes */}
-                        <Route path="/dashboard/*" element={
-                          <ProtectedRoute>
-                            <UserDashboard />
-                          </ProtectedRoute>
-                        } />
+                          {/* Protected Routes */}
+                          <Route path="/dashboard/*" element={
+                            <ProtectedRoute>
+                              <UserDashboard />
+                            </ProtectedRoute>
+                          } />
 
-                        <Route path="/messages" element={
-                          <ProtectedRoute>
-                            <CoupleMessages />
-                          </ProtectedRoute>
-                        } />
+                          <Route path="/messages" element={
+                            <ProtectedRoute>
+                              <CoupleMessages />
+                            </ProtectedRoute>
+                          } />
 
-                        <Route path="/notifications" element={
-                          <ProtectedRoute>
-                            <UserNotifications />
-                          </ProtectedRoute>
-                        } />
+                          <Route path="/notifications" element={
+                            <ProtectedRoute>
+                              <UserNotifications />
+                            </ProtectedRoute>
+                          } />
 
-                        <Route path="/profile" element={
-                          <ProtectedRoute>
-                            <ProfileSettings />
-                          </ProtectedRoute>
-                        } />
+                          <Route path="/profile" element={
+                            <ProtectedRoute>
+                              <ProfileSettings />
+                            </ProtectedRoute>
+                          } />
 
-                        <Route path="/vendor/dashboard/*" element={
-                          <ProtectedRoute>
-                            <VendorDashboard />
-                          </ProtectedRoute>
-                        } />
+                          <Route path="/vendor/dashboard/*" element={
+                            <ProtectedRoute>
+                              <VendorDashboard />
+                            </ProtectedRoute>
+                          } />
 
-                        {/* Tools Routes */}
-                        <Route path="/tools" element={
-                          <ProtectedRoute>
-                            <Outlet />
-                          </ProtectedRoute>
-                        }>
-                          <Route index element={<ToolsDashboard />} />
-                          <Route path="website" element={<WeddingWebsiteSetup />} />
-                          <Route path="timeline" element={<Timeline />} />
-                          <Route path="budget" element={<BudgetPlanner />} />
-                          <Route path="seating" element={<SeatingChart />} />
-                          <Route path="weather" element={<Weather />} />
-                        </Route>
+                          {/* Tools Routes */}
+                          <Route path="/tools" element={
+                            <ProtectedRoute>
+                              <Outlet />
+                            </ProtectedRoute>
+                          }>
+                            <Route index element={<ToolsDashboard />} />
+                            <Route path="website" element={<WeddingWebsiteSetup />} />
+                            <Route path="timeline" element={<Timeline />} />
+                            <Route path="budget" element={<BudgetPlanner />} />
+                            <Route path="seating" element={<SeatingChart />} />
+                            <Route path="weather" element={<Weather />} />
+                          </Route>
 
-                        {/* Shop Panel Demo - Public Route (no login required) */}
-                        <Route path="/shop-panel/demo" element={<ShopPanelDemo />} />
+                          {/* Shop Panel Demo - Public Route (no login required) */}
+                          <Route path="/shop-panel/demo" element={<ShopPanelDemo />} />
 
-                        {/* Shop Owner Panel Routes */}
-                        <Route path="/shop-panel" element={
-                          <ProtectedRoute>
-                            <ShopOwnerLayout />
-                          </ProtectedRoute>
-                        }>
-                          <Route index element={<ShopOwnerDashboard />} />
-                          <Route path="products" element={<ShopOwnerProducts />} />
-                          <Route path="categories" element={<ShopOwnerCategories />} />
-                          <Route path="profile" element={<ShopOwnerProfile />} />
-                          <Route path="gallery" element={<ShopOwnerGallery />} />
-                          <Route path="affiliate" element={<ShopOwnerAffiliates />} />
-                          <Route path="analytics" element={<ShopOwnerAnalytics />} />
-                          <Route path="help" element={<ShopOwnerHelp />} />
-                        </Route>
-                        <Route path="/admin" element={
-                          <ProtectedRoute requireAdmin={true}>
-                            <AdminLayout />
-                          </ProtectedRoute>
-                        }>
-                          <Route index element={<AdminDashboard />} />
-                          <Route path="vendors" element={<AdminVendors />} />
-                          <Route path="users" element={<AdminUsers />} />
-                          <Route path="leads" element={<AdminLeads />} />
-                          <Route path="config" element={<AdminConfig />} />
-                          <Route path="translations" element={<AdminTranslations />} />
-                          <Route path="categories" element={<AdminCategories />} />
-                          <Route path="avatars" element={<AdminAvatars />} />
-                          <Route path="blog" element={<AdminBlog />} />
-                          <Route path="pricing" element={<AdminPricing />} />
-                          <Route path="analytics" element={<AdminAnalytics />} />
-                          <Route path="reviews" element={<AdminReviews />} />
-                          <Route path="messages" element={<AdminMessages />} />
-                          <Route path="credit-approval" element={<AdminCreditApproval />} />
-                          <Route path="pages" element={<AdminPages />} />
-                          <Route path="finance" element={<AdminFinance />} />
-                          <Route path="notifications" element={<AdminNotifications />} />
+                          {/* Shop Owner Panel Routes */}
+                          <Route path="/shop-panel" element={
+                            <ProtectedRoute>
+                              <ShopOwnerLayout />
+                            </ProtectedRoute>
+                          }>
+                            <Route index element={<ShopOwnerDashboard />} />
+                            <Route path="products" element={<ShopOwnerProducts />} />
+                            <Route path="categories" element={<ShopOwnerCategories />} />
+                            <Route path="profile" element={<ShopOwnerProfile />} />
+                            <Route path="gallery" element={<ShopOwnerGallery />} />
+                            <Route path="affiliate" element={<ShopOwnerAffiliates />} />
+                            <Route path="analytics" element={<ShopOwnerAnalytics />} />
+                            <Route path="help" element={<ShopOwnerHelp />} />
+                          </Route>
+                          <Route path="/admin" element={
+                            <ProtectedRoute requireAdmin={true}>
+                              <AdminLayout />
+                            </ProtectedRoute>
+                          }>
+                            <Route index element={<AdminDashboard />} />
+                            <Route path="vendors" element={<AdminVendors />} />
+                            <Route path="users" element={<AdminUsers />} />
+                            <Route path="leads" element={<AdminLeads />} />
+                            <Route path="config" element={<AdminConfig />} />
+                            <Route path="translations" element={<AdminTranslations />} />
+                            <Route path="categories" element={<AdminCategories />} />
+                            <Route path="avatars" element={<AdminAvatars />} />
+                            <Route path="blog" element={<AdminBlog />} />
+                            <Route path="pricing" element={<AdminPricing />} />
+                            <Route path="analytics" element={<AdminAnalytics />} />
+                            <Route path="reviews" element={<AdminReviews />} />
+                            <Route path="messages" element={<AdminMessages />} />
+                            <Route path="credit-approval" element={<AdminCreditApproval />} />
+                            <Route path="pages" element={<AdminPages />} />
+                            <Route path="finance" element={<AdminFinance />} />
+                            <Route path="notifications" element={<AdminNotifications />} />
 
-                          {/* Forum Routes */}
-                          <Route path="forum" element={<AdminForumSettings />} />
-                          <Route path="forum-categories" element={<AdminForumCategories />} />
-                          <Route path="forum-ghosts" element={<AdminGhostGenerator />} />
-                          <Route path="forum-bots" element={<AdminBotManager />} />
-                          <Route path="forum-moderation" element={<AdminModeration />} />
+                            {/* Forum Routes */}
+                            <Route path="forum" element={<AdminForumSettings />} />
+                            <Route path="forum-categories" element={<AdminForumCategories />} />
+                            <Route path="forum-ghosts" element={<AdminGhostGenerator />} />
+                            <Route path="forum-bots" element={<AdminBotManager />} />
+                            <Route path="forum-moderation" element={<AdminModeration />} />
 
-                          {/* Shop Routes */}
-                          <Route path="shop-accounts" element={<AdminShopAccounts />} />
-                          <Route path="shop-categories" element={<AdminShopCategories />} />
-                          <Route path="shop-products" element={<AdminShopProducts />} />
-                          <Route path="shop-inquiries" element={<AdminShopInquiries />} />
-                          <Route path="shop-applications" element={<AdminShopApplications />} />
-                          <Route path="shop-settings" element={<AdminShopSettings />} />
-                          <Route path="shop-plans" element={<AdminShopPlans />} />
-                          <Route path="shop-faqs" element={<AdminShopFaqs />} />
-                          <Route path="shop-announcements" element={<AdminShopAnnouncements />} />
-                          <Route path="shop-product-requests" element={<AdminShopProductRequests />} />
-                          <Route path="shop-commissions" element={<AdminShopCommissions />} />
+                            {/* Shop Routes */}
+                            <Route path="shop-accounts" element={<AdminShopAccounts />} />
+                            <Route path="shop-categories" element={<AdminShopCategories />} />
+                            <Route path="shop-products" element={<AdminShopProducts />} />
+                            <Route path="shop-inquiries" element={<AdminShopInquiries />} />
+                            <Route path="shop-applications" element={<AdminShopApplications />} />
+                            <Route path="shop-settings" element={<AdminShopSettings />} />
+                            <Route path="shop-plans" element={<AdminShopPlans />} />
+                            <Route path="shop-faqs" element={<AdminShopFaqs />} />
+                            <Route path="shop-announcements" element={<AdminShopAnnouncements />} />
+                            <Route path="shop-product-requests" element={<AdminShopProductRequests />} />
+                            <Route path="shop-commissions" element={<AdminShopCommissions />} />
 
-                          {/* Amazon Affiliate Routes */}
-                          <Route path="amazon" element={<AdminAmazonDashboard />} />
-                          <Route path="amazon/products" element={<AdminAmazonProducts />} />
-                          <Route path="amazon/add" element={<AdminAmazonAdd />} />
-                          <Route path="amazon/bulk" element={<AdminAmazonAdd />} />
-                          <Route path="amazon/settings" element={<AdminAmazonSettings />} />
+                            {/* Amazon Affiliate Routes */}
+                            <Route path="amazon" element={<AdminAmazonDashboard />} />
+                            <Route path="amazon/products" element={<AdminAmazonProducts />} />
+                            <Route path="amazon/add" element={<AdminAmazonAdd />} />
+                            <Route path="amazon/bulk" element={<AdminAmazonAdd />} />
+                            <Route path="amazon/settings" element={<AdminAmazonSettings />} />
 
-                          <Route path="pages/:pageId" element={<AdminPageEdit />} />
-                          <Route path="comments" element={<AdminComments />} />
-                          <Route path="faq" element={<AdminFAQ />} />
-                          <Route path="messaging" element={<AdminMessaging />} />
-                        </Route>
+                            <Route path="pages/:pageId" element={<AdminPageEdit />} />
+                            <Route path="comments" element={<AdminComments />} />
+                            <Route path="faq" element={<AdminFAQ />} />
+                            <Route path="messaging" element={<AdminMessaging />} />
+                          </Route>
 
 
-                        {/* Catch all */}
-                        <Route path="*" element={<Navigate to="/" replace />} />
-                      </Routes>
-                    </Suspense>
+                          {/* Catch all */}
+                          <Route path="*" element={<Navigate to="/" replace />} />
+                        </Routes>
+                      </Suspense>
+                    </div>
+                    <Footer />
                   </div>
-                  <Footer />
-                </div>
-              </Router>
-            </PlanningProvider>
-          </VendorProvider>
-        </SiteSettingsProvider>
+                </Router>
+              </PlanningProvider>
+            </VendorProvider>
+          </SiteSettingsProvider>
+        </PWAInstallProvider>
       </LanguageProvider>
     </AuthProvider>
   );

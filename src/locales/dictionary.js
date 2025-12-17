@@ -774,6 +774,20 @@ export const dictionary = {
         forum: { en: "Forum", de: "Forum", tr: "Forum" },
         profile: { en: "Profile", de: "Profil", tr: "Profil" }
     },
+    pwa: {
+        install: { en: "Install", de: "Installieren", tr: "Yükle" },
+        installText: { en: "Install our app for a better experience!", de: "Installiere unsere App für ein besseres Erlebnis!", tr: "En iyi deneyim için uygulamamızı yükleyin!" },
+        iosInstructions: { en: "Tap Share and 'Add to Home Screen'", de: "Tippe auf Teilen ve 'Zum Home-Bildschirm'", tr: "Paylaş'a dokun ve 'Ana Ekrana Ekle'yi seç" },
+        showcaseTitle: { en: "Wedding in Your Pocket", de: "Hochzeit in der Tasche", tr: "Düğününüz Cebinizde" },
+        showcaseText: { en: "Download our mobile app to manage your wedding planning on the go.", de: "Lade unsere mobile App herunter, um deine Hochzeitsplanung von unterwegs zu verwalten.", tr: "Düğün planlamanızı hareket halindeyken yönetmek için mobil uygulamamızı indirin." },
+        mobileExperience: { en: "Mobile Experience", de: "Mobile Erfahrung", tr: "Mobil Deneyim" },
+        feature1Title: { en: "Push Notifications", de: "Push-Benachrichtigungen", tr: "Anlık Bildirimler" },
+        feature1Text: { en: "Don't miss any detail in your wedding preparations.", de: "Verpasse kein Detail bei deinen Hochzeitsvorbereitungen.", tr: "Düğün hazırlıklarında hiçbir detayı kaçırmayın." },
+        feature2Title: { en: "Quick Access", de: "Schnellzugriff", tr: "Hızlı Erişim" },
+        feature2Text: { en: "Reach the platform with one click from your home screen.", de: "Erreiche die Plattform mit einem Klick von deinem Home-Bildschirm.", tr: "Ana ekranınızdan tek tıkla platforma ulaşın." },
+        feature3Title: { en: "Offline Mode", de: "Offline-Modus", tr: "Çevrimdışı Mod" },
+        feature3Text: { en: "Browse your plans even without internet connection.", de: "Durchsuche deine Pläne auch ohne Internetverbindung.", tr: "Planlarınıza internetiniz olmasa bile göz atın." }
+    },
     nav: {
         services: {
             en: "Services",

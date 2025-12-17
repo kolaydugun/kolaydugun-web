@@ -17,6 +17,7 @@ import FAQSection from '../components/FAQSection';
 import HomeBlogShowcase from '../components/HomeBlogShowcase';
 import FloatingCTA from '../components/FloatingCTA';
 import HomeShopPromo from '../components/HomeShopPromo';
+import MobileAppShowcase from '../components/Home/MobileAppShowcase';
 
 const Home = () => {
     const { t, language } = useLanguage();
@@ -64,6 +65,7 @@ const Home = () => {
             <FeaturedCategories />
             <FeaturedVendors />
             <WhyUs />
+            <MobileAppShowcase />
             <Services />
             <HomeShopPromo />
             <HomeBlogShowcase />
