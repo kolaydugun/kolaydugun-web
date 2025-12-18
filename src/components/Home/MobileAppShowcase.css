@@ -1,8 +1,21 @@
 .mobile-app-showcase {
-    padding: 100px 0;
-    background: linear-gradient(135deg, #fdfcfd 0%, #fef9fc 100%);
+    padding: 120px 0;
+    background: radial-gradient(circle at 10% 20%, rgba(253, 252, 253, 1) 0%, rgba(254, 249, 252, 1) 90.1%);
     overflow: hidden;
     position: relative;
+}
+
+.mobile-app-showcase::before {
+    content: "";
+    position: absolute;
+    top: -10%;
+    right: -5%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(139, 34, 82, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(60px);
+    z-index: 0;
 }
 
 .showcase-grid {
@@ -110,15 +123,25 @@
 
 .float-card {
     position: absolute;
-    background: white;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(139, 34, 82, 0.15);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 24px;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(139, 34, 82, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
     color: #8B2252;
     z-index: 2;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.float-card:hover {
+    transform: scale(1.05) translateY(-5px) !important;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 30px 60px rgba(139, 34, 82, 0.18);
 }
 
 .card-1 {

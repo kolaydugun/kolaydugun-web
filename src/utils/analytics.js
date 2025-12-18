@@ -90,6 +90,40 @@ export const trackOutboundLink = (url, linkType = 'other') => {
     });
 };
 
+/**
+ * Track lead contact attempts (WhatsApp, Phone, Email)
+ */
+export const trackLeadContact = (method, targetName, targetId) => {
+    trackEvent('generate_lead', {
+        method: method,
+        target_name: targetName,
+        target_id: targetId,
+        event_category: 'engagement'
+    });
+};
+
+/**
+ * Track funnel steps (e.g., product_view -> add_to_cart -> begin_checkout)
+ */
+export const trackFunnelStep = (stepName, stepNumber, params = {}) => {
+    trackEvent('funnel_step', {
+        step_name: stepName,
+        step_number: stepNumber,
+        ...params
+    });
+};
+
+/**
+ * Track JavaScript errors
+ */
+export const trackError = (errorMessage, errorSource, fatal = false) => {
+    trackEvent('exception', {
+        description: errorMessage,
+        fatal: fatal,
+        error_source: errorSource
+    });
+};
+
 export default {
     trackEvent,
     trackAmazonClick,
@@ -97,5 +131,8 @@ export default {
     trackSearch,
     trackShare,
     trackProductView,
-    trackOutboundLink
+    trackOutboundLink,
+    trackLeadContact,
+    trackFunnelStep,
+    trackError
 };

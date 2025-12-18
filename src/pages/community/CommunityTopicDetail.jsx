@@ -1079,7 +1079,7 @@ const CommunityTopicDetail = () => {
                                 className="w-full sm:w-auto sm:absolute sm:bottom-4 sm:right-4 mt-3 sm:mt-0 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-8 py-3 rounded-2xl font-black text-sm uppercase tracking-wider shadow-lg hover:shadow-purple-200 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                             >
                                 {submitting ? <LucideIcons.Loader2 size={16} className="animate-spin" /> : <LucideIcons.Send size={16} />}
-                                {t('community.topic.replyButton') || t('community.topic.submitReply')}
+                                {t('community.topic.submitReply')}
                             </button>
                         </form>
                     ) : (

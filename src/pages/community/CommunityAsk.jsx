@@ -60,7 +60,7 @@ const CommunityAsk = () => {
                     content: formData.content, // Keeping it simple text for now
                     slug: slug,
                     status: 'published',
-                    language: 'tr' // Hardcoded for now
+                    language: language || 'tr' // Dynamic language from context
                 }])
                 .select()
                 .single();

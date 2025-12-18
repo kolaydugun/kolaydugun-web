@@ -10,6 +10,7 @@ import FaviconManager from './components/FaviconManager';
 import ScrollToTop from './components/ScrollToTop';
 import MobileBottomNav from './components/MobileBottomNav';
 import SmartAppBanner from './components/SmartAppBanner';
+import { trackError } from './utils/analytics';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -139,6 +140,25 @@ function App() {
       once: true,
       offset: 50,
     });
+  }, []);
+
+  // Tracking: Global Error & Rejection Monitoring
+  useEffect(() => {
+    const handleError = (event) => {
+      trackError(event.message, event.filename || 'unknown', false);
+    };
+
+    const handleRejection = (event) => {
+      trackError(event.reason?.message || 'Promise rejection', 'promise', false);
+    };
+
+    window.addEventListener('error', handleError);
+    window.addEventListener('unhandledrejection', handleRejection);
+
+    return () => {
+      window.removeEventListener('error', handleError);
+      window.removeEventListener('unhandledrejection', handleRejection);
+    };
   }, []);
 
   return (

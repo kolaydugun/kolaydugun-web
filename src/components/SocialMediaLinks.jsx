@@ -1,7 +1,8 @@
 import React from 'react';
+import { trackLeadContact } from '../utils/analytics';
 import './SocialMediaLinks.css';
 
-const SocialMediaLinks = ({ socialMedia }) => {
+const SocialMediaLinks = ({ socialMedia, targetName, targetId }) => {
     if (!socialMedia || Object.keys(socialMedia).length === 0) {
         return null;
     }
@@ -57,6 +58,7 @@ const SocialMediaLinks = ({ socialMedia }) => {
                         rel="noopener noreferrer"
                         className={`social-link social-${platform}`}
                         title={platform.charAt(0).toUpperCase() + platform.slice(1)}
+                        onClick={() => trackLeadContact(platform, targetName, targetId)}
                     >
                         {socialIcons[platform]}
                     </a>

@@ -14,6 +14,7 @@ import SocialMediaLinks from '../components/SocialMediaLinks';
 import { categoryImages, defaultImage } from '../constants/categoryImages';
 import { getCategoryTranslationKey } from '../constants/vendorData';
 import VendorReviews from '../components/Reviews/VendorReviews';
+import { trackLeadContact, trackFunnelStep } from '../utils/analytics';
 import './VendorDetail.css';
 
 const VendorDetail = () => {
@@ -166,6 +167,18 @@ const VendorDetail = () => {
         fetchVendorDetail();
     }, [slug]);
 
+    // Tracking: Vendor View
+    useEffect(() => {
+        if (vendor) {
+            trackFunnelStep('vendor_view', 1, {
+                vendor_id: vendor.id,
+                vendor_name: vendor.name,
+                category: vendor.category,
+                city: vendor.city
+            });
+        }
+    }, [vendor?.id]);
+
     if (loading) {
         return (
             <div className="section container" style={{ marginTop: '100px', textAlign: 'center' }}>
@@ -311,7 +324,16 @@ const VendorDetail = () => {
             }
 
 
+
             setFormSuccess(true);
+
+            // Tracking: Lead Form Success
+            trackLeadContact('form_submission', vendor.name, vendor.id);
+            trackFunnelStep('lead_form_submitted', 2, {
+                vendor_id: vendor.id,
+                vendor_name: vendor.name
+            });
+
             form.reset();
             setTimeout(() => setFormSuccess(false), 5000); // Hide after 5 seconds
         } catch (err) {
@@ -432,7 +454,11 @@ const VendorDetail = () => {
                             {/* Social Media Links - Protected */}
                             {/* Social Media Links - Protected */}
                             {showFeature('social') && (
-                                <SocialMediaLinks socialMedia={{ ...vendor.social_media, website: vendor.website_url }} />
+                                <SocialMediaLinks
+                                    socialMedia={{ ...vendor.social_media, website: vendor.website_url }}
+                                    targetName={vendor.name}
+                                    targetId={vendor.id}
+                                />
                             )}
 
                             <div className="vendor-tags">

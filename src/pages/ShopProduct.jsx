@@ -6,6 +6,7 @@ import SEO from '../components/SEO';
 import AffiliateDisclosure from '../components/AffiliateDisclosure';
 import AmazonTrustBadges from '../components/AmazonTrustBadges';
 import SocialShareButtons from '../components/SocialShareButtons';
+import { trackLeadContact, trackFunnelStep } from '../utils/analytics';
 import './ShopProduct.css';
 
 const ShopProduct = () => {
@@ -252,6 +253,14 @@ const ShopProduct = () => {
             if (productData?.shop?.id) {
                 trackAnalytics(productData.shop.id, 'product_view');
                 fetchTotalViews(productData.shop.id);
+
+                // Tracking: Product View (Expert Analytics)
+                trackFunnelStep('product_view', 2, {
+                    shop_id: productData.shop.id,
+                    product_id: productData.id,
+                    product_name: productData.name_de || productData.name_tr,
+                    product_type: productData.product_type
+                });
             }
         } catch (error) {
             console.error('Error fetching product:', error);
@@ -366,11 +375,14 @@ const ShopProduct = () => {
             : language === 'en'
                 ? `Hello, I'm interested in: ${productName}`
                 : `Merhaba, şu ürünle ilgileniyorum: ${productName}`;
+
+        trackLeadContact('whatsapp', productName, product.id);
         window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
     };
 
     const handlePhone = () => {
         if (product?.shop?.id) trackAnalytics(product.shop.id, 'phone_click');
+        trackLeadContact('phone', getLocalizedField(product, 'name'), product.id);
         window.location.href = `tel:${product.shop.contact_phone}`;
     };
 
@@ -382,6 +394,7 @@ const ShopProduct = () => {
             : language === 'en'
                 ? `Inquiry: ${productName}`
                 : `Soru: ${productName}`;
+        trackLeadContact('email', productName, product.id);
         window.location.href = `mailto:${product.shop.contact_email}?subject=${encodeURIComponent(subject)}`;
     };
 
@@ -390,6 +403,8 @@ const ShopProduct = () => {
         if (product?.shop?.id) trackAnalytics(product.shop.id, 'contact_click');
 
         if (product.product_type === 'amazon' && product.affiliate_url) {
+            trackLeadContact('amazon_external', getLocalizedField(product, 'name'), product.id);
+            trackFunnelStep('amazon_redirect', 3, { product_id: product.id });
             window.open(product.affiliate_url, '_blank');
             return;
         }

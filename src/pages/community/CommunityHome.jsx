@@ -187,7 +187,9 @@ const CommunityHome = () => {
             {/* Sonuç sayısı */}
             {searchQuery && (
                 <p className="text-sm text-gray-500">
-                    "{searchQuery}" için {filteredPosts.length} sonuç bulundu
+                    {t('community.searchResults', { query: searchQuery, count: filteredPosts.length })
+                        .replace('{{query}}', searchQuery)
+                        .replace('{{count}}', filteredPosts.length)}
                 </p>
             )}
 
@@ -211,7 +213,7 @@ const CommunityHome = () => {
                                     {post.vendorInfo?.business_name || `${post.profile?.first_name || ''} ${post.profile?.last_name || ''}`.trim() || 'Anonim'}
                                 </h4>
                                 {post.profile?.role === 'vendor' && (
-                                    <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-semibold">🏢 Tedarikçi</span>
+                                    <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-semibold">{t('community.vendorBadge')}</span>
                                 )}
                             </div>
                         </div>

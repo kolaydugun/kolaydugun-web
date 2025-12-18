@@ -90,6 +90,11 @@ export const community = {
         de: "Anbieter",
         tr: "Tedarikçi"
     },
+    vendorBadge: {
+        en: "🏢 Vendor",
+        de: "🏢 Anbieter",
+        tr: "🏢 Tedarikçi"
+    },
     someone: {
         en: "Someone",
         de: "Jemand",
@@ -99,6 +104,11 @@ export const community = {
         en: "Search topics...",
         de: "Themen suchen...",
         tr: "Konularda ara..."
+    },
+    searchResults: {
+        en: "{{count}} results found for \"{{query}}\"",
+        de: "{{count}} Ergebnisse für \"{{query}}\" gefunden",
+        tr: "\"{{query}}\" için {{count}} sonuç bulundu"
     },
     linkCopied: {
         en: "Link copied!",
@@ -111,6 +121,7 @@ export const community = {
         replyPlaceholder: { en: "Write your reply here...", de: "Schreiben Sie hier Ihre Antwort...", tr: "Cevabınızı buraya yazın..." },
         replyTitle: { en: "Write a Reply", de: "Eine Antwort schreiben", tr: "Cevap Yaz" },
         replyButton: { en: "Reply", de: "Antworten", tr: "Cevapla" },
+        submitReply: { en: "Post Reply", de: "Antwort senden", tr: "Cevabı Gönder" },
         report: { en: "Report", de: "Melden", tr: "Şikayet Et" },
         reportDescription: {
             en: "Why are you reporting this content? Please explain.",
@@ -172,8 +183,8 @@ export const community = {
     media: {
         addImage: { en: "Add Image", de: "Bild hinzufügen", tr: "Resim Ekle" },
         addVideo: { en: "Add Video", de: "Video hinzufügen", tr: "Video Ekle" },
-        imageTitle: { en: "Project Content / Image", de: "Inhalt / Bild", tr: "İçerik / Resim" },
-        videoTitle: { en: "Project Content / Video", de: "Inhalt / Video", tr: "İçerik / Video" },
+        imageTitle: { en: "Image Content", de: "Bildinhalt", tr: "Resim İçeriği" },
+        videoTitle: { en: "Video Content", de: "Videoinhalt", tr: "Video İçeriği" },
         add: { en: "Add", de: "Hinzufügen", tr: "Ekle" },
         uploading: { en: "Uploading...", de: "Wird hochgeladen...", tr: "Yükleniyor..." },
         videoPlaceholder: { en: "Paste YouTube or TikTok link...", de: "YouTube- oder TikTok-Link einfügen...", tr: "YouTube veya TikTok linkini yapıştırın..." },
