@@ -39,6 +39,7 @@ const Footer = () => {
         { label: t('footer.privacy') || 'Privacy', to: '/p/datenschutz' },
         { label: t('footer.terms') || 'Terms', to: '/p/agb' },
         { label: t('common.about'), to: '/p/ueber-uns' },
+        { label: language === 'tr' ? 'Kurucumuz & Vizyonumuz' : 'Founder & Vision', to: '/kurucumuz' },
     ];
 
     return (

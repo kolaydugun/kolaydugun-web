@@ -165,6 +165,7 @@ const AdminLayout = () => {
                     <div className="admin-nav-divider"></div>
                     <div className="admin-nav-label">{getLabel('settings')}</div>
                     <NavItem to="/admin/config" icon="⚙️" label={getMenu('globalSettings')} />
+                    <NavItem to="/admin/founder" icon="👤" label={language === 'tr' ? 'Kurucumuz' : 'Founder'} description={language === 'tr' ? 'Kurucu profili ve yol haritasını yönet' : 'Manage founder profile and roadmap'} />
                     <NavItem to="/admin/translations" icon="🌍" label={getMenu('translations')} />
                     <NavItem to="/admin/help" icon="❓" label={getMenu('helpGuide')} description={menuDescriptions.helpGuide} />
 

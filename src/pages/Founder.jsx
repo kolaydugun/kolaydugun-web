@@ -1,0 +1,162 @@
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import { useLanguage } from '../context/LanguageContext';
+import { Youtube, Linkedin, Instagram, ExternalLink, Calendar, CheckCircle, ArrowRight } from 'lucide-react';
+import SEO from '../components/SEO';
+import './Founder.css';
+
+const Founder = () => {
+    const { language, t } = useLanguage();
+    const [settings, setSettings] = useState(null);
+    const [projects, setProjects] = useState([]);
+    const [media, setMedia] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const lang = language || 'tr';
+
+    useEffect(() => {
+        const loadFounderData = async () => {
+            const { data: sData } = await supabase.from('founder_settings').select('*').eq('is_active', true).single();
+            const { data: pData } = await supabase.from('founder_projects').select('*').eq('is_active', true).order('order_index', { ascending: true });
+            const { data: mData } = await supabase.from('founder_media').select('*').eq('is_active', true).order('order_index', { ascending: true });
+
+            if (sData) setSettings(sData);
+            if (pData) setProjects(pData);
+            if (mData) setMedia(mData);
+            setLoading(false);
+        };
+        loadFounderData();
+    }, []);
+
+    const getYouTubeEmbedUrl = (url) => {
+        let vid = '';
+        if (url.includes('v=')) vid = url.split('v=')[1].split('&')[0];
+        else if (url.includes('shorts/')) vid = url.split('shorts/')[1].split('?')[0];
+        else if (url.includes('youtu.be/')) vid = url.split('youtu.be/')[1].split('?')[0];
+        return `https://www.youtube.com/embed/${vid}`;
+    };
+
+    const ensureHttps = (url) => {
+        if (!url) return '';
+        if (url.startsWith('http://') || url.startsWith('https://')) return url;
+        return `https://${url}`;
+    };
+
+    if (loading || !settings) return <div className="loading">Loading...</div>;
+
+    const bio = settings[`bio_${lang}`] || settings.bio_tr;
+
+    return (
+        <div className="founder-page">
+            <SEO
+                title={lang === 'tr' ? 'Kurucumuz ve Vizyonumuz' : 'Our Founder & Vision'}
+                description={bio.substring(0, 160)}
+                image={settings.photo_url}
+            />
+
+            {/* HERO SECTION */}
+            <section className="founder-hero">
+                <div className="container">
+                    <div className="hero-grid" data-aos="fade-up">
+                        <div className="founder-photo-container">
+                            <img src={settings.photo_url} alt="Founder" className="founder-photo" />
+                            <div className="founder-quote">
+                                "{lang === 'tr' ? 'Gelenekseli dijitalle buluşturarak geleceği inşa ediyoruz.' : lang === 'de' ? 'Wir bauen die Zukunft, indem wir Tradition mit Digital verbinden.' : 'Building the future by merging tradition with digital.'}"
+                            </div>
+                        </div>
+                        <div className="founder-content">
+                            <span className="badge" style={{ background: '#ff4d6d', color: '#fff', padding: '5px 15px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                                {lang === 'tr' ? 'KOLAYDUGUN KURUCU' : lang === 'de' ? 'KOLAYDUGUN GRÜNDER' : 'KOLAYDUGUN FOUNDER'}
+                            </span>
+                            <h1 style={{ fontSize: '3.5rem', fontWeight: '800', marginTop: '20px', lineHeight: '1.1' }}>
+                                {lang === 'tr' ? 'Vizyonumuz ve Hikayemiz' : lang === 'de' ? 'Unsere Vision & Geschichte' : 'Our Vision & Story'}
+                            </h1>
+                            <p style={{ fontSize: '1.2rem', color: '#555', marginTop: '30px', lineHeight: '1.8' }}>
+                                {bio}
+                            </p>
+                            <div className="social-links" style={{ display: 'flex', gap: '20px', marginTop: '40px' }}>
+                                {settings.social_links?.linkedin && (
+                                    <a href={settings.social_links.linkedin} target="_blank" rel="noreferrer" className="social-btn"><Linkedin size={24} /></a>
+                                )}
+                                {settings.social_links?.youtube && (
+                                    <a href={settings.social_links.youtube} target="_blank" rel="noreferrer" className="social-btn"><Youtube size={24} /></a>
+                                )}
+                                {settings.social_links?.instagram && (
+                                    <a href={settings.social_links.instagram} target="_blank" rel="noreferrer" className="social-btn"><Instagram size={24} /></a>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ROADMAP SECTION */}
+            <section className="roadmap-section">
+                <div className="container">
+                    <div className="section-header" data-aos="fade-up">
+                        <h2>{lang === 'tr' ? 'Yol Haritamız' : lang === 'de' ? 'Unser Fahrplan' : 'Our Roadmap'}</h2>
+                        <p>{lang === 'tr' ? 'Geçmişten geleceğe, düğün dünyasını nasıl dönüştürüyoruz?' : lang === 'de' ? 'Wie wir die Hochzeitswelt von der Vergangenheit in die Zukunft transformieren.' : 'How we transform the wedding world from past to future.'}</p>
+                    </div>
+
+                    <div className="roadmap-timeline">
+                        {projects.map((proj, index) => (
+                            <div key={proj.id} className={`roadmap-item ${index % 2 === 0 ? 'left' : 'right'}`} data-aos={index % 2 === 0 ? 'fade-right' : 'fade-left'}>
+                                <div className="roadmap-dot"></div>
+                                <div className="roadmap-card">
+                                    <span className="roadmap-status">
+                                        {proj.status === 'past' && (lang === 'tr' ? 'Tamamlandı' : lang === 'de' ? 'Abgeschlossen' : 'Completed')}
+                                        {proj.status === 'current' && (lang === 'tr' ? 'Aktif Geliştirme' : lang === 'de' ? 'Jetzt Live' : 'Now Live')}
+                                        {proj.status === 'future' && (lang === 'tr' ? 'Yakında' : lang === 'de' ? 'Demnächst' : 'Coming Soon')}
+                                    </span>
+                                    <h4>{proj[`title_${lang}`] || proj.title_tr}</h4>
+                                    <p>{proj[`description_${lang}`] || proj.description_tr}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* MEDIA SECTION */}
+            <section className="media-section">
+                <div className="container">
+                    <div className="section-header" data-aos="fade-up">
+                        <h2>{lang === 'tr' ? 'Kurucunun Sesi' : lang === 'de' ? 'Stimmen des Gründers' : 'Voices from the Founder'}</h2>
+                        <p>{lang === 'tr' ? 'Düğün dünyasına dair ipuçları, eğitimler ve basın haberleri.' : lang === 'de' ? 'Tipps, Tutorials und Pressemitteilungen über die Hochzeitswelt.' : 'Tips, tutorials and press news about the wedding world.'}</p>
+                    </div>
+
+                    <div className="video-grid">
+                        {media.map((item) => (
+                            <div key={item.id} className="video-card" data-aos="zoom-in">
+                                {item.type === 'youtube' ? (
+                                    <div className={`video-container ${item.media_format === 'short' ? 'short' : ''}`}>
+                                        <iframe
+                                            src={getYouTubeEmbedUrl(item.url)}
+                                            title={item.title_tr}
+                                            frameBorder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowFullScreen
+                                        ></iframe>
+                                    </div>
+                                ) : (
+                                    <div className="press-link" style={{ position: 'relative' }}>
+                                        <img src={item.thumbnail_url} alt="press" style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
+                                        <div style={{ padding: '20px' }}>
+                                            <span className="badge" style={{ background: '#eee', padding: '4px 10px', borderRadius: '4px', fontSize: '0.7rem' }}>{lang === 'tr' ? 'BASIN' : lang === 'de' ? 'PRESSE' : 'PRESS'}</span>
+                                            <h5 style={{ marginTop: '10px' }}>{item[`title_${lang}`] || item.title_tr}</h5>
+                                            <a href={item.url} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#ff4d6d', fontWeight: 'bold', marginTop: '10px' }}>
+                                                {lang === 'tr' ? 'Habere Git' : lang === 'de' ? 'Vollständige Geschichte lesen' : 'Read Full Story'} <ExternalLink size={14} />
+                                            </a>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        </div>
+    );
+};
+
+export default Founder;

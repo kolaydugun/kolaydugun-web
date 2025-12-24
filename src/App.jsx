@@ -102,7 +102,9 @@ const AdminClaims = lazy(() => import('./pages/AdminClaims'));
 const AdminPoachedInquiries = lazy(() => import('./pages/AdminPoachedInquiries'));
 const AdminCityAliases = React.lazy(() => import('./pages/AdminCityAliases'));
 const AdminImports = React.lazy(() => import('./pages/AdminImports'));
+const AdminFounder = React.lazy(() => import('./pages/AdminFounder'));
 const DirectoryPage = lazy(() => import('./pages/DirectoryPage'));
+const Founder = lazy(() => import('./pages/Founder'));
 
 
 // Amazon Affiliate Pages
@@ -195,6 +197,8 @@ function App() {
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/faq" element={<FAQPage />} />
             <Route path="/directory" element={<DirectoryPage />} />
+            <Route path="/kurucumuz" element={<Founder />} />
+            <Route path="/vizyonumuz" element={<Founder />} />
 
             <Route path="/de/shop" element={<Shop />} />
             <Route path="/de/shop/produkt/:id" element={<ShopProduct />} />
@@ -303,6 +307,7 @@ function App() {
               <Route path="poached-inquiries" element={<AdminPoachedInquiries />} />
               <Route path="city-aliases" element={<AdminCityAliases />} />
               <Route path="imports" element={<AdminImports />} />
+              <Route path="/admin/founder" element={<AdminFounder />} />
               <Route path="help" element={<AdminHelp />} />
 
             </Route>
