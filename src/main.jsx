@@ -8,6 +8,7 @@ import { PWAInstallProvider } from './context/PWAInstallContext';
 import { SiteSettingsProvider } from './context/SiteSettingsContext';
 import { VendorProvider } from './context/VendorContext';
 import { PlanningProvider } from './context/PlanningContext';
+import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import './index.css';
 import i18n from './i18n'; // Import i18n configuration
@@ -145,27 +146,29 @@ const paypalOptions = {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ErrorBoundary>
-      <AuthProvider>
-        <PayPalScriptProvider options={paypalOptions}>
-          <LanguageProvider>
-            <PWAInstallProvider>
-              <SiteSettingsProvider>
-                <VendorProvider>
-                  <PlanningProvider>
-                    <Router>
-                      <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><LoadingSpinner /></div>}>
-                        <App />
-                      </Suspense>
-                    </Router>
-                  </PlanningProvider>
-                </VendorProvider>
-              </SiteSettingsProvider>
-            </PWAInstallProvider>
-          </LanguageProvider>
-        </PayPalScriptProvider>
-      </AuthProvider>
-    </ErrorBoundary>
+    <HelmetProvider>
+      <ErrorBoundary>
+        <AuthProvider>
+          <PayPalScriptProvider options={paypalOptions}>
+            <LanguageProvider>
+              <PWAInstallProvider>
+                <SiteSettingsProvider>
+                  <VendorProvider>
+                    <PlanningProvider>
+                      <Router>
+                        <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><LoadingSpinner /></div>}>
+                          <App />
+                        </Suspense>
+                      </Router>
+                    </PlanningProvider>
+                  </VendorProvider>
+                </SiteSettingsProvider>
+              </PWAInstallProvider>
+            </LanguageProvider>
+          </PayPalScriptProvider>
+        </AuthProvider>
+      </ErrorBoundary>
+    </HelmetProvider>
   </React.StrictMode>,
 );
 

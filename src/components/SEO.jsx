@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import { useLanguage } from '../context/LanguageContext';
 import { useSiteSettings } from '../context/SiteSettingsContext';
 
@@ -13,7 +14,6 @@ const SEO = ({
 }) => {
     const { language } = useLanguage();
     const { settings } = useSiteSettings() || { settings: {} }; // Safety fallback
-
 
     const siteName = 'KolayDugun.de';
     const defaultDescription = 'Find the best wedding vendors in Germany. Turkish & International weddings made easy.';
@@ -59,7 +59,7 @@ const SEO = ({
     };
 
     return (
-        <>
+        <Helmet>
             {/* Standard metadata */}
             <title>{fullTitle}</title>
             <meta name="description" content={fullDescription} />
@@ -93,7 +93,7 @@ const SEO = ({
                     {JSON.stringify(structuredData)}
                 </script>
             )}
-        </>
+        </Helmet>
     );
 };
 
