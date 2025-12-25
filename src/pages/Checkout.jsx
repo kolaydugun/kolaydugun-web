@@ -128,28 +128,26 @@ const Checkout = () => {
                     </div>
                 )}
 
-                <PayPalScriptProvider options={initialOptions}>
-                    <PayPalButtons
-                        style={{ layout: "vertical" }}
-                        createOrder={(data, actions) => {
-                            return actions.order.create({
-                                purchase_units: [
-                                    {
-                                        amount: {
-                                            value: price,
-                                        },
-                                        description: planName
+                <PayPalButtons
+                    style={{ layout: "vertical" }}
+                    createOrder={(data, actions) => {
+                        return actions.order.create({
+                            purchase_units: [
+                                {
+                                    amount: {
+                                        value: price,
                                     },
-                                ],
-                            });
-                        }}
-                        onApprove={handleApprove}
-                        onError={(err) => {
-                            console.error("PayPal Error:", err);
-                            setError(t('checkout.error'));
-                        }}
-                    />
-                </PayPalScriptProvider>
+                                    description: planName
+                                },
+                            ],
+                        });
+                    }}
+                    onApprove={handleApprove}
+                    onError={(err) => {
+                        console.error("PayPal Error:", err);
+                        setError(t('checkout.error'));
+                    }}
+                />
 
                 <div style={{ textAlign: 'center', marginTop: '20px' }}>
                     <button

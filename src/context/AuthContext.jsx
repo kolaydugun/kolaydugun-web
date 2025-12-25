@@ -51,13 +51,23 @@ export const AuthProvider = ({ children }) => {
                 const wasCleared = await clearCorruptSession();
                 if (wasCleared) return; // Page will reload, no need to setLoading(false)
 
+                // Add safety check for supabase and supabase.auth
+                if (!supabase || !supabase.auth) {
+                    console.error('[SUPABASE] Client not initialized properly.');
+                    setLoading(false);
+                    return;
+                }
+
                 // Check active session
                 const { data: { session }, error } = await supabase.auth.getSession();
 
                 if (error) {
                     console.error('[DEBUG] AuthContext getSession error:', error);
-                    if (error.message.includes('JWT') || error.status === 401 || error.code === 'PGRST301') {
-                        await supabase.auth.signOut();
+                    // Critical error handling
+                    if (error.message?.includes('JWT') || error.status === 401 || error.code === 'PGRST301') {
+                        if (supabase && supabase.auth) {
+                            await supabase.auth.signOut();
+                        }
                         localStorage.clear();
                         setLoading(false); // CRITICAL: Set loading to false before reload
                         window.location.reload();
@@ -81,17 +91,23 @@ export const AuthProvider = ({ children }) => {
 
         initAuth();
 
-        // Listen for auth changes
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            if (session?.user?.id) {
-                fetchProfile(session.user);
-            } else {
-                setUser(null);
-                setLoading(false);
-            }
-        });
+        // Listen for auth changes with safety check
+        let subscription = null;
+        if (supabase && supabase.auth) {
+            const authResponse = supabase.auth.onAuthStateChange((_event, session) => {
+                if (session?.user?.id) {
+                    fetchProfile(session.user);
+                } else {
+                    setUser(null);
+                    setLoading(false);
+                }
+            });
+            subscription = authResponse.data?.subscription;
+        }
 
-        return () => subscription.unsubscribe();
+        return () => {
+            if (subscription) subscription.unsubscribe();
+        };
     }, []);
 
     const fetchProfile = async (authUser) => {

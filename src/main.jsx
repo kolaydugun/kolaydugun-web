@@ -152,8 +152,7 @@ class ErrorBoundary extends React.Component {
 const paypalOptions = {
   "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID || "test",
   currency: "EUR",
-  intent: "capture",
-  vault: true
+  intent: "capture"
 };
 
 ReactDOM.createRoot(document.getElementById('root')).render(

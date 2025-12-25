@@ -572,12 +572,12 @@ const ShopApplication = () => {
                 </div>
 
                 {/* Pricing Section - Full Width Below Form */}
-                <div className="pricing-section-wrapper">
-                    <div className="pricing-section">
+                <div className="shop-pricing-section-wrapper">
+                    <div className="shop-pricing-section">
                         <h3>{language === 'de' ? 'Plan Wählen' : language === 'en' ? 'Select Plan' : 'Plan Seçin'}</h3>
 
                         {/* Billing Toggle */}
-                        <div className="billing-toggle">
+                        <div className="shop-billing-toggle">
                             <span className={formData.billing_cycle === 'monthly' ? 'active' : ''}>
                                 {language === 'de' ? 'Monatlich' : language === 'en' ? 'Monthly' : 'Aylık'}
                             </span>
@@ -590,22 +590,22 @@ const ShopApplication = () => {
                             </button>
                             <span className={formData.billing_cycle === 'yearly' ? 'active' : ''}>
                                 {language === 'de' ? 'Jährlich' : language === 'en' ? 'Yearly' : 'Yıllık'}
-                                <span className="discount-badge">-17%</span>
+                                <span className="shop-discount-badge">-17%</span>
                             </span>
                         </div>
 
                         {/* Plan Cards */}
-                        <div className="plan-cards">
+                        <div className="shop-plan-list">
                             {/* Starter Plan */}
                             <div
-                                className={`plan-card ${formData.selected_plan === 'starter' ? 'selected' : ''}`}
+                                className={`shop-plan-item ${formData.selected_plan === 'starter' ? 'selected' : ''}`}
                                 onClick={() => selectPlan('starter')}
                             >
-                                <div className="plan-header">
+                                <div className="shop-plan-header">
                                     <h4>Starter</h4>
                                     <p>{language === 'de' ? 'Für den Einstieg' : language === 'en' ? 'Getting Started' : 'Başlangıç İçin'}</p>
                                 </div>
-                                <div className="plan-price">
+                                <div className="shop-plan-price">
                                     <span className="price">
                                         {formData.billing_cycle === 'yearly' ? '16' : '19'}€
                                     </span>
@@ -616,29 +616,29 @@ const ShopApplication = () => {
                                         </span>
                                     )}
                                 </div>
-                                <ul className="plan-features">
+                                <ul className="shop-plan-features">
                                     <li>✓ 5 {language === 'de' ? 'Produkte' : language === 'en' ? 'products' : 'ürün'}</li>
                                     <li>✓ {language === 'de' ? 'Basis-Profil' : language === 'en' ? 'Basic profile' : 'Temel profil'}</li>
                                     <li>✓ WhatsApp {language === 'de' ? 'Support' : language === 'en' ? 'Support' : 'destek'}</li>
                                 </ul>
-                                <div className="plan-select-indicator">
+                                <div className="shop-plan-select-indicator">
                                     {formData.selected_plan === 'starter' ? '✓' : ''}
                                 </div>
                             </div>
 
                             {/* Business Plan - Popular */}
                             <div
-                                className={`plan-card popular ${formData.selected_plan === 'business' ? 'selected' : ''}`}
+                                className={`shop-plan-item popular ${formData.selected_plan === 'business' ? 'selected' : ''}`}
                                 onClick={() => selectPlan('business')}
                             >
-                                <div className="popular-badge">
+                                <div className="shop-popular-badge">
                                     ⭐ {language === 'de' ? 'Beliebt' : language === 'en' ? 'Popular' : 'Popüler'}
                                 </div>
-                                <div className="plan-header">
+                                <div className="shop-plan-header">
                                     <h4>Business</h4>
                                     <p>{language === 'de' ? 'Für wachsende Shops' : language === 'en' ? 'For growing shops' : 'Büyüyen mağazalar için'}</p>
                                 </div>
-                                <div className="plan-price">
+                                <div className="shop-plan-price">
                                     <span className="price">
                                         {formData.billing_cycle === 'yearly' ? '33' : '39'}€
                                     </span>
@@ -649,27 +649,27 @@ const ShopApplication = () => {
                                         </span>
                                     )}
                                 </div>
-                                <ul className="plan-features">
+                                <ul className="shop-plan-features">
                                     <li>✓ 20 {language === 'de' ? 'Produkte' : language === 'en' ? 'products' : 'ürün'}</li>
                                     <li>✓ {language === 'de' ? 'Premium-Profil' : language === 'en' ? 'Premium profile' : 'Gelişmiş profil'}</li>
                                     <li>✓ {language === 'de' ? 'Prioritätsanzeige' : language === 'en' ? 'Priority listing' : 'Öncelikli listeleme'}</li>
                                     <li>✓ {language === 'de' ? 'Statistiken' : language === 'en' ? 'Analytics' : 'İstatistikler'}</li>
                                 </ul>
-                                <div className="plan-select-indicator">
+                                <div className="shop-plan-select-indicator">
                                     {formData.selected_plan === 'business' ? '✓' : ''}
                                 </div>
                             </div>
 
                             {/* Premium Plan */}
                             <div
-                                className={`plan-card premium ${formData.selected_plan === 'premium' ? 'selected' : ''}`}
+                                className={`shop-plan-item premium ${formData.selected_plan === 'premium' ? 'selected' : ''}`}
                                 onClick={() => selectPlan('premium')}
                             >
-                                <div className="plan-header">
+                                <div className="shop-plan-header">
                                     <h4>Premium</h4>
                                     <p>{language === 'de' ? 'Für Profis' : language === 'en' ? 'For professionals' : 'Profesyoneller için'}</p>
                                 </div>
-                                <div className="plan-price">
+                                <div className="shop-plan-price">
                                     <span className="price">
                                         {formData.billing_cycle === 'yearly' ? '58' : '69'}€
                                     </span>
@@ -680,14 +680,14 @@ const ShopApplication = () => {
                                         </span>
                                     )}
                                 </div>
-                                <ul className="plan-features">
+                                <ul className="shop-plan-features">
                                     <li>✓ {language === 'de' ? 'Unbegrenzte Produkte' : language === 'en' ? 'Unlimited products' : 'Sınırsız ürün'}</li>
                                     <li>✓ {language === 'de' ? 'VIP-Profil' : language === 'en' ? 'VIP profile' : 'VIP profil'}</li>
                                     <li>✓ {language === 'de' ? 'Featured auf Homepage' : language === 'en' ? 'Featured on homepage' : 'Ana sayfada öne çıkarma'}</li>
                                     <li>✓ {language === 'de' ? 'Erweiterte Statistiken' : language === 'en' ? 'Advanced analytics' : 'Detaylı istatistikler'}</li>
                                     <li>✓ {language === 'de' ? 'Affiliate-System' : language === 'en' ? 'Affiliate system' : 'Affiliate sistemi'}</li>
                                 </ul>
-                                <div className="plan-select-indicator">
+                                <div className="shop-plan-select-indicator">
                                     {formData.selected_plan === 'premium' ? '✓' : ''}
                                 </div>
                             </div>

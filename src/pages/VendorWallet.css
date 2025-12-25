@@ -44,14 +44,17 @@
 .balance-content h2 {
     margin: 0;
     font-size: 1.2rem;
-    opacity: 0.9;
-    font-weight: 500;
+    opacity: 1;
+    font-weight: 600;
+    color: white;
 }
 
 .balance-amount {
     margin: 5px 0 0 0;
     font-size: 2.5rem;
     font-weight: 700;
+    color: white !important;
+    opacity: 1 !important;
 }
 
 /* Credit Packages Section */

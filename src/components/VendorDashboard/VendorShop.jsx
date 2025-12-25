@@ -117,7 +117,7 @@ const VendorShop = () => {
         try {
             const { data, error } = await supabase
                 .from('vendors')
-                .select('id, company_name, shop_enabled, shop_product_limit, shop_plan, shop_plan_expires_at')
+                .select('id, business_name, shop_enabled, shop_product_limit, shop_plan, shop_plan_expires_at')
                 .eq('id', user.id)
                 .maybeSingle();
 

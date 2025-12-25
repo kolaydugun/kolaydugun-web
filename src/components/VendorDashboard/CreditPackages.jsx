@@ -4,7 +4,7 @@ import { supabase } from '../../supabaseClient';
 import { useLanguage } from '../../context/LanguageContext';
 
 const CreditPackages = ({ onPurchaseSuccess }) => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [packages, setPackages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedPackage, setSelectedPackage] = useState(null);
@@ -138,8 +138,11 @@ const CreditPackages = ({ onPurchaseSuccess }) => {
 
                         {selectedPackage === pkg.id ? (
                             <div style={{ marginTop: '10px' }}>
+                                <div style={{ marginBottom: '15px', fontSize: '0.85rem', color: '#666', fontWeight: '500' }}>
+                                    {language === 'tr' ? 'PayPal ile Güvenli Ödeme' : language === 'de' ? 'Sichere Zahlung mit PayPal' : 'Secure Payment with PayPal'}
+                                </div>
                                 <PayPalButtons
-                                    style={{ layout: 'vertical' }}
+                                    style={{ layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay' }}
                                     createOrder={(data, actions) => {
                                         return actions.order.create({
                                             purchase_units: [{
@@ -165,9 +168,19 @@ const CreditPackages = ({ onPurchaseSuccess }) => {
                                 />
                                 <button
                                     onClick={() => setSelectedPackage(null)}
-                                    style={{ marginTop: '10px', width: '100%', padding: '8px', cursor: 'pointer' }}
+                                    style={{
+                                        marginTop: '10px',
+                                        width: '100%',
+                                        padding: '10px',
+                                        cursor: 'pointer',
+                                        background: 'none',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '8px',
+                                        color: '#666',
+                                        fontSize: '0.9rem'
+                                    }}
                                 >
-                                    İptal
+                                    {language === 'tr' ? 'İptal' : language === 'de' ? 'Abbrechen' : 'Cancel'}
                                 </button>
                             </div>
                         ) : (
@@ -182,11 +195,16 @@ const CreditPackages = ({ onPurchaseSuccess }) => {
                                     borderRadius: '8px',
                                     fontWeight: '600',
                                     cursor: 'pointer',
-                                    fontSize: '0.95rem'
+                                    fontSize: '0.95rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '8px'
                                 }}
                                 onClick={() => setSelectedPackage(pkg.id)}
                             >
-                                {t('vendorWallet.buyBtn')}
+                                <span style={{ fontSize: '1.1rem' }}>🅿️</span>
+                                {t('vendorWallet.buyBtn') || (language === 'tr' ? 'SATIN AL' : 'BUY NOW')}
                             </button>
                         )}
                     </div>

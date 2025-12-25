@@ -15,7 +15,7 @@
 .category-card,
 .service-card,
 .feature-card,
-[class*="-card"]:not(.stat-card):not(.plan-card) {
+[class*="-card"]:not(.stat-card):not(.plan-card):not(.shop-plan-card) {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
         box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
@@ -27,7 +27,7 @@
 .category-card:hover,
 .service-card:hover,
 .feature-card:hover,
-[class*="-card"]:not(.stat-card):not(.plan-card):hover {
+[class*="-card"]:not(.stat-card):not(.plan-card):not(.shop-plan-card):hover {
     transform: translateY(-8px) scale(1.02) !important;
     box-shadow: 0 20px 40px rgba(255, 107, 157, 0.2) !important;
 }
