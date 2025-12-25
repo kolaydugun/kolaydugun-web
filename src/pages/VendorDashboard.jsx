@@ -509,7 +509,7 @@ const VendorDashboard = () => {
                                 <button
                                     className="btn btn-primary btn-lg"
                                     onClick={() => {
-                                        const liveUrl = import.meta.env.VITE_LIVE_MODULE_URL || 'http://localhost:5175';
+                                        const liveUrl = import.meta.env.VITE_LIVE_MODULE_URL || (import.meta.env.PROD ? 'https://live.kolaydugun.de' : 'http://localhost:5175');
                                         window.open(`${liveUrl}/dashboard`, '_blank');
                                     }}
                                     style={{ padding: '15px 40px', fontSize: '1.2rem', background: '#f43f5e', border: 'none' }}
@@ -699,7 +699,7 @@ const VendorDashboard = () => {
                             className={`live-request-btn ${activeTab === 'live-request' ? 'active' : ''} ${!hasLiveAccess ? 'locked' : ''}`}
                             onClick={() => {
                                 if (hasLiveAccess) {
-                                    const liveUrl = import.meta.env.VITE_LIVE_MODULE_URL || 'http://localhost:5175';
+                                    const liveUrl = import.meta.env.VITE_LIVE_MODULE_URL || (import.meta.env.PROD ? 'https://live.kolaydugun.de' : 'http://localhost:5175');
                                     window.open(`${liveUrl}/dashboard`, '_blank');
                                 } else {
                                     handleTabChange('live-request');
