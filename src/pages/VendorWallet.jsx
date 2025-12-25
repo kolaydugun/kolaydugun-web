@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../supabaseClient';

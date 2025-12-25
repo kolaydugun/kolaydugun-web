@@ -384,9 +384,11 @@ const VendorDashboard = () => {
 
                                     <div className="content-container flex-grow">
                                         <div className="flex items-center gap-2 mb-2">
-                                            <span style={{ fontSize: '1.2rem' }}>🧠</span>
-                                            <h3 style={{ margin: 0 }}>{t('dashboard.gamification.aiAnalysis.title')}</h3>
-                                            <span className="pulse-dot"></span>
+                                            <span style={{ fontSize: '1.2rem', color: '#e11d48', opacity: 0.8 }}>
+                                                <i className="fas fa-magic"></i>
+                                            </span>
+                                            <h3 style={{ margin: 0, fontWeight: '600', color: '#1e293b' }}>{t('dashboard.gamification.aiAnalysis.title')}</h3>
+                                            <span className="live-dot-pulse"></span>
                                         </div>
 
                                         {recentInsight ? (
@@ -452,9 +454,18 @@ const VendorDashboard = () => {
                                                 </div>
                                             </>
                                         ) : (
-                                            <div className="loading-state py-4">
-                                                <p style={{ fontSize: '1.1rem', fontWeight: '500', marginBottom: '8px' }}>🚀 {t('dashboard.gamification.aiAnalysis.preparing') || 'Analiz Hazırlanıyor...'}</p>
-                                                <p style={{ opacity: 0.7, fontStyle: 'italic', fontSize: '0.9rem' }}>{t('dashboard.gamification.aiAnalysis.analyzing')}</p>
+                                            <div style={{ padding: '24px' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px' }}>
+                                                    <div className="ai-brain-pulse">
+                                                        🧠
+                                                    </div>
+                                                    <div>
+                                                        <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#0f172a', margin: '0' }}>{t('dashboard.gamification.aiAnalysis.preparing')}</h3>
+                                                        <p style={{ fontSize: '0.875rem', color: '#64748b', margin: '4px 0 0' }}>
+                                                            {t('dashboard.gamification.aiAnalysis.analyzing')}
+                                                        </p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         )}
                                     </div>
@@ -567,8 +578,8 @@ const VendorDashboard = () => {
                                     {/* Option 3: Premium */}
                                     <div className="pass-card" style={{ padding: '25px', border: '2px solid #8b5cf6', borderRadius: '12px', background: '#f5f3ff', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                                         <div>
-                                            <h4 style={{ marginBottom: '10px', color: '#5b21b6' }}>{t('dashboard.liveAccessPass.premiumBtn')}</h4>
-                                            <p style={{ fontSize: '0.85rem', color: '#a78bfa', marginBottom: '20px' }}>💍 {t('pricing.monthly')}</p>
+                                            <h4 style={{ marginBottom: '10px', color: '#5b21b6' }}>{t('dashboard.liveAccessPass.premiumAction')}</h4>
+                                            <p style={{ fontSize: '0.85rem', color: '#7c3aed', marginBottom: '20px' }}>{t('dashboard.pricing.monthly')} <strong>24.90€</strong></p>
                                         </div>
                                         <button
                                             className="btn btn-primary"

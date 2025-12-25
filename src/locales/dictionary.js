@@ -1494,6 +1494,11 @@ export const dictionary = {
                     "de": "AI-Performance-Analyse",
                     "tr": "AI Performans Analizi"
                 },
+                "preparing": {
+                    "en": "Analysis Preparing...",
+                    "de": "Analyse wird vorbereitet...",
+                    "tr": "Analiz Hazırlanıyor..."
+                },
                 "scoreLabel": {
                     "en": "Success Score",
                     "de": "Erfolgs-Score",
@@ -13790,6 +13795,39 @@ export const dictionary = {
                 "en": "Apply Now →",
                 "de": "Jetzt bewerben →",
                 "tr": "Hemen Başvur →"
+            }
+        },
+        "vendorWallet": {
+            "title": { "en": "Wallet", "de": "Geldbörse", "tr": "Cüzdan" },
+            "desc": { "en": "Manage your credits and subscription", "de": "Verwalten Sie Ihr Guthaben und Ihr Abonnement", "tr": "Kredilerinizi ve aboneliğinizi yönetin" },
+            "currentBalance": { "en": "Current Balance", "de": "Aktueller Stand", "tr": "Güncel Bakiye" },
+            "credits": { "en": "Credits", "de": "Credits", "tr": "Kredi" },
+            "membershipStatus": { "en": "Membership Status", "de": "Mitgliedschaftsstatus", "tr": "Üyelik Durumu" },
+            "premiumMember": { "en": "Premium Member", "de": "Premium-Mitglied", "tr": "Premium Üye" },
+            "freeMember": { "en": "Free Member", "de": "Kostenloses Mitglied", "tr": "Ücretsiz Üye" },
+            "expiresOn": { "en": "Expires on", "de": "Läuft ab am", "tr": "Bitiş Tarihi" },
+            "upgradeToPremium": { "en": "Upgrade to Premium", "de": "Auf Premium upgraden", "tr": "Premium'a Yükselt" },
+            "history": { "en": "Transaction History", "de": "Transaktionsverlauf", "tr": "İşlem Geçmişi" },
+            "filterAll": { "en": "All", "de": "Alle", "tr": "Tümü" },
+            "filterSuccess": { "en": "Success", "de": "Erfolgreich", "tr": "Başarılı" },
+            "filterPending": { "en": "Pending", "de": "Ausstehend", "tr": "Bekleyen" },
+            "filterRejected": { "en": "Rejected", "de": "Abgelehnt", "tr": "Reddedilen" },
+            "date": { "en": "Date", "de": "Datum", "tr": "Tarih" },
+            "transaction": { "en": "Transaction", "de": "Transaktion", "tr": "İşlem" },
+            "status": { "en": "Status", "de": "Status", "tr": "Durum" },
+            "amount": { "en": "Amount", "de": "Betrag", "tr": "Tutar" },
+            "noTxn": { "en": "No transactions found", "de": "Keine Transaktionen gefunden", "tr": "Henüz işlem bulunamadı" },
+            "purchase": { "en": "Credit Purchase", "de": "Kreditkauf", "tr": "Kredi Alımı" },
+            "usage": { "en": "Credit Usage", "de": "Kreditnutzung", "tr": "Kredi Kullanımı" },
+            "statusPending": { "en": "Pending", "de": "Ausstehend", "tr": "Bekliyor" },
+            "statusApproved": { "en": "Approved", "de": "Genehmigt", "tr": "Onaylandı" },
+            "statusRejected": { "en": "Rejected", "de": "Abgelehnt", "tr": "Reddedildi" },
+            "purchaseRequest": { "en": "purchase request", "de": "Kaufanfrage", "tr": "satın alma talebi" },
+            "packageNames": {
+                "starter": { "en": "Starter Pack", "de": "Starterpaket", "tr": "Başlangıç Paketi" },
+                "standard": { "en": "Standard Pack", "de": "Standardpaket", "tr": "Standart Paket" },
+                "pro": { "en": "Pro Pack", "de": "Pro-Paket", "tr": "Pro Paket" },
+                "business": { "en": "Business Pack", "de": "Business-Paket", "tr": "Kurumsal Paket" }
             }
         },
         "community": {
