@@ -78,7 +78,7 @@ const AdminComments = lazy(() => import('./pages/AdminComments'));
 const AdminFAQ = lazy(() => import('./pages/AdminFAQ'));
 const AdminFounder = lazy(() => import('./pages/AdminFounder'));
 const AdminHelp = lazy(() => import('./pages/AdminHelp'));
-const AdminLiveRequestPanel = lazy(() => import('./pages/Admin/AdminLiveRequestPanel'));
+const AdminLiveRequestPanel = lazy(() => import('./pages/admin/AdminLiveRequestPanel'));
 
 // Admin Forum
 const AdminForumSettings = lazy(() => import('./pages/AdminForumSettings'));
