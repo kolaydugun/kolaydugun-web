@@ -167,7 +167,9 @@ const PricingPlans = () => {
                 .order('price_monthly', { ascending: true });
 
             if (data) {
-                setPlans(data);
+                // Force Premium to 29.00 EUR for consistency
+                const mappedPlans = data.map(p => p.id === 'premium' ? { ...p, price_monthly: 29.00, price_yearly: 290.00 } : p);
+                setPlans(mappedPlans);
             }
         } catch (error) {
             console.error('Error fetching plans:', error);

@@ -37,5 +37,22 @@ body {
 input,
 textarea,
 button {
-    @apply transition-all duration-200 outline-none;
+    @apply transition-all duration-300 outline-none;
+}
+
+@layer utilities {
+    .glass-card {
+        @apply bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-2xl;
+    }
+
+    .mesh-bg {
+        background-color: #020617;
+        background-image:
+            radial-gradient(at 0% 0%, hsla(343, 100%, 70%, 0.08) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, hsla(343, 100%, 70%, 0.08) 0px, transparent 50%);
+    }
+
+    .premium-text {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50;
+    }
 }

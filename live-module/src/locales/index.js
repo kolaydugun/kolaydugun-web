@@ -85,7 +85,21 @@ export const locales = {
                 q14: 'Verilerim güvende mi?',
                 a14: 'Kesinlikle. Misafirlerin verileri sadece istek sırasında DJ ile paylaşılır ve kalıcı olarak saklanmaz. Gizliliğiniz bizim için önemlidir.',
                 q15: 'Sadece düğünlerde mi kullanılır?',
-                a15: 'Hayır; doğum günleri, kurumsal partiler, kulüpler ve her türlü müzikli etkinlik için mükemmel bir interaktif çözümdür.'
+                a15: 'Hayır; doğum günleri, kurumsal partiler, kulüpler ve her türlü müzikli etkinlik için mükemmel bir interaktif çözümdür.',
+                q16: 'Bakiyeme nasıl kredi eklerim?',
+                a16: 'Abonelik ve Krediler modalı üzerinden bir paket seçip PayPal ile ödeme yaptıktan sonra platform yöneticisi bakiyenizi aktif edecektir.',
+                q17: 'Üyelik iptali nasıl yapılır?',
+                a17: 'Aboneliğinizi dilediğiniz zaman platform üzerinden veya PayPal hesabınızdan iptal edebilirsiniz. Herhangi bir taahhüt bulunmamaktadır.'
+            },
+            support: {
+                title: "Yardım ve Destek",
+                subtitle: "Ödeme veya sistemle ilgili yardıma mı ihtiyacınız var?",
+                whatsapp: "WhatsApp'tan Yaz",
+                email: "E-posta Gönder",
+                paymentSuccess: "Paketiniz Aktif Edildi!",
+                orderId: "Sipariş No",
+                needHelp: "Sorun mu yaşıyorsunuz? Destek ekibimize ulaşın.",
+                contactAdmin: "Yönetici ile İletişim"
             }
         },
         liveFeed: {
@@ -258,7 +272,21 @@ export const locales = {
                 q14: 'Sind meine Daten sicher?',
                 a14: 'Absolut. Gästedaten werden nur während der Anfrage mit dem DJ geteilt und nicht dauerhaft gespeichert. Ihre Privatsphäre ist uns wichtig.',
                 q15: 'Wird es nur bei Hochzeiten verwendet?',
-                a15: 'Nein; es ist eine perfekte interaktive Lösung für Geburtstage, Firmenfeiern, Clubs und jede Art von Musikveranstaltung.'
+                a15: 'Nein; es ist eine perfekte interaktive Lösung für Geburtstage, Firmenfeiern, Clubs und jede Art von Musikveranstaltung.',
+                q16: 'Wie buche ich Credits auf mein Konto?',
+                a16: 'Wählen Sie im Modal „Mitgliedschaft und Credits“ ein Paket aus. Nach der Zahlung per PayPal wird der Plattformbetreiber Ihr Guthaben aktivieren.',
+                q17: 'Wie kann ich die Mitgliedschaft kündigen?',
+                a17: 'Sie können Ihr Abonnement jederzeit über die Plattform oder Ihr PayPal-Konto kündigen. Es gibt keine Mindestlaufzeit.'
+            },
+            support: {
+                title: "Support und Hilfe",
+                subtitle: "Benötigen Sie Hilfe bei der Zahlung oder dem System?",
+                whatsapp: "Per WhatsApp kontaktieren",
+                email: "E-Mail senden",
+                paymentSuccess: "Ihr Paket wurde aktiviert!",
+                orderId: "Bestellnummer",
+                needHelp: "Haben Sie Probleme? Kontaktieren Sie unseren Support.",
+                contactAdmin: "Admin kontaktieren"
             }
         },
         liveFeed: {
@@ -431,7 +459,21 @@ export const locales = {
                 q14: 'Is my data safe?',
                 a14: 'Absolutely. Guest data is only shared with the DJ during the request and is not stored permanently. Your privacy is important to us.',
                 q15: 'Is it only for weddings?',
-                a15: 'No; it is a perfect interactive solution for birthdays, corporate parties, clubs, and any kind of musical event.'
+                a15: 'No; it is a perfect interactive solution for birthdays, corporate parties, clubs, and any kind of musical event.',
+                q16: 'How do I add credits to my account?',
+                a16: 'Select a package via the Membership and Credits modal. After paying with PayPal, the platform administrator will activate your balance.',
+                q17: 'How to cancel membership?',
+                a17: 'You can cancel your subscription at any time via the platform or your PayPal account. There are no long-term commitments.'
+            },
+            support: {
+                title: "Support & Help",
+                subtitle: "Need help with payment or the system?",
+                whatsapp: "Contact via WhatsApp",
+                email: "Send Email",
+                paymentSuccess: "Package Activated!",
+                orderId: "Order ID",
+                needHelp: "Having issues? Contact our support team.",
+                contactAdmin: "Contact Admin"
             }
         },
         liveFeed: {

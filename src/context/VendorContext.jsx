@@ -61,8 +61,9 @@ export const VendorProvider = ({ children }) => {
             } else if (filters.sort === 'price_desc') {
                 query = query.order('price_range', { ascending: false });
             } else {
-                // Default: Featured first, then rating
+                // Default: Featured first, then by sort order (lower = higher priority), then rating
                 query = query.order('featured_active', { ascending: false })
+                    .order('featured_sort_order', { ascending: true, nullsFirst: false })
                     .order('rating', { ascending: false });
             }
 

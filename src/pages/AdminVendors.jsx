@@ -46,6 +46,8 @@ const AdminVendors = () => {
     const [subModalEndDate, setSubModalEndDate] = useState('');
     const [subModalCredits, setSubModalCredits] = useState(0);
     const [isSavingSub, setIsSavingSub] = useState(false);
+    const [dateModal, setDateModal] = useState({ show: false, vendorId: null, type: null, currentDate: '' }); // type: 'vitrin' or 'rocket'
+    const [newExpiryDate, setNewExpiryDate] = useState('');
 
     // AI Insight State
     const [aiInsightVendor, setAiInsightVendor] = useState(null);
@@ -448,10 +450,16 @@ const AdminVendors = () => {
         setIsSavingSub(true);
         try {
             const vendorId = managingSubscription.id;
+            const isPremium = subModalPlan === 'premium';
+            const endDate = subModalEndDate ? new Date(subModalEndDate).toISOString() : null;
+
             const updates = {
                 subscription_tier: subModalPlan,
-                subscription_end_date: subModalEndDate ? new Date(subModalEndDate).toISOString() : null,
+                subscription_end_date: endDate,
                 credit_balance: (managingSubscription.credit_balance || 0) + parseInt(subModalCredits || 0),
+                // Premium alan otomatik olarak Kategori Üst Sıra (Rocket) hakkı kazanır
+                featured_active: isPremium ? true : (managingSubscription.featured_active || false),
+                featured_until: isPremium ? endDate : (managingSubscription.featured_until || null),
                 updated_at: new Date().toISOString()
             };
 
@@ -533,6 +541,34 @@ const AdminVendors = () => {
         }
     };
 
+    const toggleTopPlacement = async (vendorId, newValue) => {
+        try {
+            const endDate = newValue ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() : null;
+
+            const { error } = await supabase
+                .from('vendors')
+                .update({
+                    featured_active: newValue,
+                    featured_until: endDate
+                })
+                .eq('id', vendorId);
+
+            if (error) throw error;
+
+            setVendors(vendors.map(v =>
+                v.id === vendorId ? {
+                    ...v,
+                    featured_active: newValue,
+                    featured_until: endDate
+                } : v
+            ));
+
+        } catch (err) {
+            console.error('Toggle top placement error:', err);
+            alert(t('common.error', 'Hata: ') + err.message);
+        }
+    };
+
     const toggleVerified = async (vendorId, newValue) => {
         try {
             const { error } = await supabase
@@ -550,6 +586,40 @@ const AdminVendors = () => {
         } catch (err) {
             console.error('Toggle verified error:', err);
             alert(t('common.error', 'Hata: ') + err.message);
+        }
+    };
+
+    const handleDateUpdate = async () => {
+        if (!dateModal.vendorId || !newExpiryDate) return;
+
+        try {
+            const updateField = dateModal.type === 'vitrin' ? 'featured_expires_at' : 'featured_until';
+            const activeField = dateModal.type === 'vitrin' ? 'is_featured' : 'featured_active';
+            const formattedDate = new Date(newExpiryDate).toISOString();
+
+            const { error } = await supabase
+                .from('vendors')
+                .update({
+                    [updateField]: formattedDate,
+                    [activeField]: true
+                })
+                .eq('id', dateModal.vendorId);
+
+            if (error) throw error;
+
+            setVendors(vendors.map(v =>
+                v.id === dateModal.vendorId ? {
+                    ...v,
+                    [updateField]: formattedDate,
+                    [activeField]: true
+                } : v
+            ));
+
+            setDateModal({ show: false, vendorId: null, type: null, currentDate: '' });
+            alert('✅ ' + t('common.success', 'Başarıyla güncellendi.'));
+        } catch (err) {
+            console.error('Date update error:', err);
+            alert('❌ ' + err.message);
         }
     };
 
@@ -983,6 +1053,14 @@ const AdminVendors = () => {
                 </div>
             ) : (
                 <>
+                    <div style={{ display: 'flex', gap: '20px', marginBottom: '15px', padding: '10px', background: '#f8fafc', borderRadius: '8px', fontSize: '0.85rem', border: '1px solid #e2e8f0' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                            <span style={{ color: '#10b981', fontWeight: 'bold' }}>⭐ Vitrin (Showcase):</span> Ana sayfa en üst bölüm (Sınırlı reklam alanı).
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                            <span style={{ color: '#3b82f6', fontWeight: 'bold' }}>🚀 Üst Sıra (Rocket):</span> Kendi kategorisinde (DJ, Salon vb.) en üstte listelenme (Premium özelliği).
+                        </div>
+                    </div>
                     <div className="vendors-table">
                         <table>
                             <thead>
@@ -1193,24 +1271,129 @@ const AdminVendors = () => {
                                                 );
                                             })()}
                                         </td>
-                                        <td>
-                                            {vendor.is_featured ? (
-                                                <div>
-                                                    <span className="badge badge-success">{t('adminPanel.vendors.status.featured', 'Vitrinde')}</span>
-                                                    {vendor.featured_expires_at && (
-                                                        <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '4px' }}>
-                                                            {t('adminPanel.vendors.table.expires', 'Bitiş')}: {new Date(vendor.featured_expires_at).toLocaleDateString(language === 'tr' ? 'tr-TR' : 'de-DE')}
-                                                        </div>
-                                                    )}
-                                                    {vendor.featured_sort_order > 0 && (
-                                                        <div style={{ fontSize: '0.7rem', color: '#64748b' }}>
-                                                            {t('adminPanel.vendors.modals.order', 'Sıra')}: {vendor.featured_sort_order}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            ) : (
-                                                <span className="badge badge-secondary">{t('adminPanel.vendors.status.passive', 'Pasif')}</span>
-                                            )}
+                                        <td style={{ textAlign: 'center' }}>
+                                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                                                {/* Vitrin (Showcase) Button */}
+                                                <button
+                                                    onClick={() => vendor.is_featured ? toggleFeatured(vendor.id, false) : openShowcaseModal(vendor)}
+                                                    style={{
+                                                        background: vendor.is_featured ? '#10b981' : '#f3f4f6',
+                                                        color: vendor.is_featured ? 'white' : '#6b7280',
+                                                        border: '1px solid',
+                                                        borderColor: vendor.is_featured ? '#059669' : '#d1d5db',
+                                                        padding: '4px 8px',
+                                                        borderRadius: '6px',
+                                                        fontSize: '0.75rem',
+                                                        fontWeight: 'bold',
+                                                        cursor: 'pointer',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '4px',
+                                                        transition: 'all 0.2s',
+                                                        width: '110px',
+                                                        justifyContent: 'center'
+                                                    }}
+                                                    title={language === 'tr' ? 'Tedarikçiyi ana sayfa en üst vitrine ekler/çıkar.' : 'Showcase on homepage.'}
+                                                >
+                                                    {vendor.is_featured ? '⭐ ' + t('adminPanel.vendors.status.featured', 'Vitrinde') : '☆ ' + t('adminPanel.vendors.table.showcase', 'Vitrin')}
+                                                </button>
+
+                                                {/* Kategori Üst Sıra (Category Top) Button */}
+                                                <button
+                                                    onClick={() => toggleTopPlacement(vendor.id, !vendor.featured_active)}
+                                                    style={{
+                                                        background: vendor.featured_active ? '#3b82f6' : '#f3f4f6',
+                                                        color: vendor.featured_active ? 'white' : '#6b7280',
+                                                        border: '1px solid',
+                                                        borderColor: vendor.featured_active ? '#2563eb' : '#d1d5db',
+                                                        padding: '4px 8px',
+                                                        borderRadius: '6px',
+                                                        fontSize: '0.75rem',
+                                                        fontWeight: 'bold',
+                                                        cursor: 'pointer',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '4px',
+                                                        transition: 'all 0.2s',
+                                                        width: '110px',
+                                                        justifyContent: 'center'
+                                                    }}
+                                                    title={language === 'tr' ? 'Kendi kategorisinde en üst sıralara taşır. (Premium paketle otomatik gelir)' : 'Top placement in category.'}
+                                                >
+                                                    {vendor.featured_active ? '🚀 ' + t('adminPanel.vendors.status.top', 'Üst Sırada') : '✈️ ' + t('adminPanel.vendors.status.makeTop', 'Üst Sıra')}
+                                                </button>
+
+                                                {(vendor.is_featured && vendor.featured_expires_at) && (
+                                                    <div
+                                                        onClick={() => {
+                                                            setDateModal({
+                                                                show: true,
+                                                                vendorId: vendor.id,
+                                                                type: 'vitrin',
+                                                                currentDate: vendor.featured_expires_at
+                                                            });
+                                                            setNewExpiryDate(new Date(vendor.featured_expires_at).toISOString().split('T')[0]);
+                                                        }}
+                                                        style={{ fontSize: '0.65rem', color: '#64748b', cursor: 'pointer', textDecoration: 'underline' }}
+                                                        title={t('adminPanel.vendors.status.editDate', 'Tarihi Düzenle')}
+                                                    >
+                                                        ⭐ {new Date(vendor.featured_expires_at).toLocaleDateString(language === 'tr' ? 'tr-TR' : 'de-DE')}
+                                                    </div>
+                                                )}
+                                                {(vendor.featured_active && vendor.featured_until) && (
+                                                    <div
+                                                        onClick={() => {
+                                                            setDateModal({
+                                                                show: true,
+                                                                vendorId: vendor.id,
+                                                                type: 'rocket',
+                                                                currentDate: vendor.featured_until
+                                                            });
+                                                            setNewExpiryDate(new Date(vendor.featured_until).toISOString().split('T')[0]);
+                                                        }}
+                                                        style={{ fontSize: '0.65rem', color: '#3b82f6', cursor: 'pointer', textDecoration: 'underline' }}
+                                                        title={t('adminPanel.vendors.status.editDate', 'Tarihi Düzenle')}
+                                                    >
+                                                        🚀 {new Date(vendor.featured_until).toLocaleDateString(language === 'tr' ? 'tr-TR' : 'de-DE')}
+                                                    </div>
+                                                )}
+
+                                                {/* Manual Rank Input - Only show if featured_active */}
+                                                {vendor.featured_active && (
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                                                        <span style={{ fontSize: '0.65rem', color: '#6b7280' }}>Sıra:</span>
+                                                        <input
+                                                            type="number"
+                                                            min="1"
+                                                            max="999"
+                                                            value={vendor.featured_sort_order || 0}
+                                                            onChange={async (e) => {
+                                                                const newOrder = parseInt(e.target.value) || 0;
+                                                                try {
+                                                                    await supabase
+                                                                        .from('vendors')
+                                                                        .update({ featured_sort_order: newOrder })
+                                                                        .eq('id', vendor.id);
+                                                                    setVendors(vendors.map(v =>
+                                                                        v.id === vendor.id ? { ...v, featured_sort_order: newOrder } : v
+                                                                    ));
+                                                                } catch (err) {
+                                                                    console.error('Rank update error:', err);
+                                                                }
+                                                            }}
+                                                            style={{
+                                                                width: '45px',
+                                                                padding: '2px 4px',
+                                                                fontSize: '0.7rem',
+                                                                border: '1px solid #d1d5db',
+                                                                borderRadius: '4px',
+                                                                textAlign: 'center'
+                                                            }}
+                                                            title={language === 'tr' ? 'Düşük numara = Daha üst sıra' : 'Lower number = Higher position'}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </div>
                                         </td>
                                         <td style={{ textAlign: 'center' }}>
                                             {(vendor.image || vendor.image_url || (Array.isArray(vendor.gallery) && vendor.gallery.length > 0)) ? (
@@ -1382,6 +1565,47 @@ const AdminVendors = () => {
                     />
                 )
             }
+
+            {/* Manual Date Adjustment Modal */}
+            {dateModal.show && (
+                <div className="admin-modal-overlay">
+                    <div className="admin-modal-content" style={{ maxWidth: '400px' }}>
+                        <div className="admin-modal-header">
+                            <h3>{dateModal.type === 'vitrin' ? '⭐ Vitrin Bitiş Tarihi' : '🚀 Roket Bitiş Tarihi'}</h3>
+                            <button onClick={() => setDateModal({ ...dateModal, show: false })} className="close-btn"><X size={20} /></button>
+                        </div>
+                        <div className="admin-modal-body" style={{ padding: '20px' }}>
+                            <div className="form-group">
+                                <label style={{ display: 'block', marginBottom: '10px', fontWeight: 'bold' }}>Yeni Bitiş Tarihi</label>
+                                <input
+                                    type="date"
+                                    className="form-control"
+                                    value={newExpiryDate}
+                                    onChange={(e) => setNewExpiryDate(e.target.value)}
+                                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ddd' }}
+                                />
+                                <small style={{ color: '#666', marginTop: '10px', display: 'block' }}>
+                                    Bu işlem, seçilen özelliği belirtilen tarihe kadar yayında tutar.
+                                </small>
+                            </div>
+                        </div>
+                        <div className="admin-modal-footer" style={{ padding: '20px', borderTop: '1px solid #eee', display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                            <button
+                                onClick={() => setDateModal({ ...dateModal, show: false })}
+                                className="btn btn-outline"
+                            >
+                                {t('common.cancel', 'Vazgeç')}
+                            </button>
+                            <button
+                                onClick={handleDateUpdate}
+                                className="btn btn-primary"
+                            >
+                                {t('common.save', 'Kaydet')}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {
                 showImportModal && (

@@ -13,11 +13,44 @@ const ShopApplication = () => {
     const [submitting, setSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
     const [affiliateValid, setAffiliateValid] = useState(null);
+    const [pricingSettings, setPricingSettings] = useState({
+        shop_price_starter_monthly: 19,
+        shop_price_starter_yearly: 16,
+        shop_price_business_monthly: 39,
+        shop_price_business_yearly: 33,
+        shop_price_business_annual_total: 390,
+        shop_price_premium_monthly: 69,
+        shop_price_premium_yearly: 58,
+        shop_price_premium_annual_total: 690,
+        shop_price_starter_annual_total: 190
+    });
 
     const [affiliateShop, setAffiliateShop] = useState(null);
     const [campaignSlug, setCampaignSlug] = useState(null); // Campaign tracking
-
     const location = useLocation();
+
+    // Fetch pricing settings
+    useEffect(() => {
+        const fetchPricing = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('system_settings')
+                    .select('key, value')
+                    .ilike('key', 'shop_price_%');
+
+                if (data && !error) {
+                    const settingsMap = {};
+                    data.forEach(item => {
+                        settingsMap[item.key] = item.value;
+                    });
+                    setPricingSettings(prev => ({ ...prev, ...settingsMap }));
+                }
+            } catch (err) {
+                console.error('Error fetching shop pricing:', err);
+            }
+        };
+        fetchPricing();
+    }, []);
 
     const [formData, setFormData] = useState({
         business_name: '',
@@ -607,12 +640,12 @@ const ShopApplication = () => {
                                 </div>
                                 <div className="shop-plan-price">
                                     <span className="price">
-                                        {formData.billing_cycle === 'yearly' ? '16' : '19'}€
+                                        {formData.billing_cycle === 'yearly' ? pricingSettings.shop_price_starter_yearly : pricingSettings.shop_price_starter_monthly}€
                                     </span>
                                     <span className="period">/{language === 'de' ? 'Mo' : language === 'en' ? 'mo' : 'ay'}</span>
                                     {formData.billing_cycle === 'yearly' && (
                                         <span className="yearly-total">
-                                            = 190€/{language === 'de' ? 'Jahr' : language === 'en' ? 'year' : 'yıl'}
+                                            = {pricingSettings.shop_price_starter_annual_total}€/{language === 'de' ? 'Jahr' : language === 'en' ? 'year' : 'yıl'}
                                         </span>
                                     )}
                                 </div>
@@ -640,12 +673,12 @@ const ShopApplication = () => {
                                 </div>
                                 <div className="shop-plan-price">
                                     <span className="price">
-                                        {formData.billing_cycle === 'yearly' ? '33' : '39'}€
+                                        {formData.billing_cycle === 'yearly' ? pricingSettings.shop_price_business_yearly : pricingSettings.shop_price_business_monthly}€
                                     </span>
                                     <span className="period">/{language === 'de' ? 'Mo' : language === 'en' ? 'mo' : 'ay'}</span>
                                     {formData.billing_cycle === 'yearly' && (
                                         <span className="yearly-total">
-                                            = 390€/{language === 'de' ? 'Jahr' : language === 'en' ? 'year' : 'yıl'}
+                                            = {pricingSettings.shop_price_business_annual_total}€/{language === 'de' ? 'Jahr' : language === 'en' ? 'year' : 'yıl'}
                                         </span>
                                     )}
                                 </div>
@@ -671,12 +704,12 @@ const ShopApplication = () => {
                                 </div>
                                 <div className="shop-plan-price">
                                     <span className="price">
-                                        {formData.billing_cycle === 'yearly' ? '58' : '69'}€
+                                        {formData.billing_cycle === 'yearly' ? pricingSettings.shop_price_premium_yearly : pricingSettings.shop_price_premium_monthly}€
                                     </span>
                                     <span className="period">/{language === 'de' ? 'Mo' : language === 'en' ? 'mo' : 'ay'}</span>
                                     {formData.billing_cycle === 'yearly' && (
                                         <span className="yearly-total">
-                                            = 690€/{language === 'de' ? 'Jahr' : language === 'en' ? 'year' : 'yıl'}
+                                            = {pricingSettings.shop_price_premium_annual_total}€/{language === 'de' ? 'Jahr' : language === 'en' ? 'year' : 'yıl'}
                                         </span>
                                     )}
                                 </div>

@@ -50,7 +50,9 @@ const Checkout = () => {
                 .update({
                     subscription_tier: 'premium',
                     subscription_end_date: new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000).toISOString(),
-                    credit_balance: (user.credit_balance || 0) + (isAnnual ? 150 : 12)
+                    credit_balance: (user.credit_balance || 0) + (isAnnual ? 150 : 12),
+                    featured_active: true,
+                    featured_until: new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000).toISOString()
                 })
                 .eq('id', user.id);
 

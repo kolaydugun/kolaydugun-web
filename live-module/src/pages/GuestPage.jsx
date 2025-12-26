@@ -26,8 +26,7 @@ const GuestPage = () => {
     const [activeBattle, setActiveBattle] = useState(null);
     const [userVote, setUserVote] = useState(null);
     const [image, setImage] = useState(null);
-    const [uploading, setUploading] = useState(false);
-    const [mediaType, setMediaType] = useState('upload'); // 'upload' or 'link'
+    const [mediaType, setMediaType] = useState('link'); // Default to link
     const [showPaypalModal, setShowPaypalModal] = useState(false);
     const [tipAmount, setTipAmount] = useState(null);
 
@@ -44,6 +43,12 @@ const GuestPage = () => {
         if (!localStorage.getItem('live_device_id')) {
             localStorage.setItem('live_device_id', 'dev_' + Math.random().toString(36).substr(2, 9));
         }
+        // Check if recently submitted
+        const lastSent = localStorage.getItem(`last_req_${slug}`);
+        if (lastSent && Date.now() - parseInt(lastSent) < 600000) { // 10 minutes
+            setSubmitted(true);
+        }
+
         fetchEvent();
 
         // Setup realtime subscription for requests
@@ -147,78 +152,6 @@ const GuestPage = () => {
         if (!error) setUserVote(option);
     };
 
-    const compressImage = (file) => {
-        return new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (event) => {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 1200;
-                    const MAX_HEIGHT = 1200;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > height) {
-                        if (width > MAX_WIDTH) {
-                            height *= MAX_WIDTH / width;
-                            width = MAX_WIDTH;
-                        }
-                    } else {
-                        if (height > MAX_HEIGHT) {
-                            width *= MAX_HEIGHT / height;
-                            height = MAX_HEIGHT;
-                        }
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    canvas.toBlob((blob) => {
-                        resolve(blob);
-                    }, 'image/jpeg', 0.7); // 0.7 kalite ile sıkıştır
-                };
-            };
-        });
-    };
-
-    const handleImageUpload = async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        setUploading(true);
-        try {
-            // Görseli sıkıştır
-            const compressedBlob = await compressImage(file);
-
-            const fileExt = 'jpg';
-            const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-            const filePath = `${event.id}/${fileName}`;
-
-            const { error: uploadError } = await supabase.storage
-                .from('live-dedications')
-                .upload(filePath, compressedBlob, {
-                    contentType: 'image/jpeg'
-                });
-
-            if (uploadError) throw uploadError;
-
-            const { data: { publicUrl } } = supabase.storage
-                .from('live-dedications')
-                .getPublicUrl(filePath);
-
-            setImage(publicUrl);
-        } catch (error) {
-            console.error('Upload error:', error);
-            alert('Görüntü yüklenirken hata oluştu!');
-        } finally {
-            setUploading(false);
-        }
-    };
 
     const fetchEvent = async () => {
         try {
@@ -322,9 +255,16 @@ const GuestPage = () => {
                 const paypalLink = event.paypal_link || event.settings?.paypal_link;
                 if (paypalLink) {
                     let finalLink = paypalLink;
-                    if (tipAmount && tipAmount !== 'custom') {
-                        // Append amount to PayPal.me link if it follows the standard pattern
-                        // Remove trailing slash if exists and append amount
+                    const isEmail = (str) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
+
+                    if (isEmail(paypalLink)) {
+                        // Modern PayPal donate link for email
+                        finalLink = `https://www.paypal.com/donate/?business=${encodeURIComponent(paypalLink)}&currency_code=EUR`;
+                        if (tipAmount && tipAmount !== 'custom') {
+                            finalLink += `&amount=${tipAmount}`;
+                        }
+                    } else if (tipAmount && tipAmount !== 'custom') {
+                        // PayPal.me pattern
                         finalLink = paypalLink.replace(/\/$/, '') + '/' + tipAmount;
                     }
                     window.open(finalLink, '_blank');
@@ -547,64 +487,19 @@ const GuestPage = () => {
 
                         <div className="space-y-3">
                             <div className="flex items-center justify-between ml-1">
-                                <label className={`text-[11px] font-bold ${styles.muted} uppercase tracking-wider`}>MEDYA DEDİKASYONU</label>
-                                <div className="flex gap-2">
-                                    <button
-                                        type="button"
-                                        onClick={() => setMediaType('upload')}
-                                        className={`text-[9px] font-black px-2 py-1 rounded-lg transition-all ${mediaType === 'upload' ? 'bg-prime text-white' : 'bg-white/5 text-slate-500'}`}
-                                    >
-                                        DOSYA
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => setMediaType('link')}
-                                        className={`text-[9px] font-black px-2 py-1 rounded-lg transition-all ${mediaType === 'link' ? 'bg-prime text-white' : 'bg-white/5 text-slate-500'}`}
-                                    >
-                                        Link
-                                    </button>
-                                </div>
+                                <label className={`text-[11px] font-bold ${styles.muted} uppercase tracking-wider`}>MEDYA DEDİKASYONU (LİNK)</label>
                             </div>
 
                             <div className="flex gap-4">
-                                {mediaType === 'upload' ? (
-                                    <label className={`flex-1 flex flex-col items-center justify-center gap-3 p-8 border-2 border-dashed rounded-3xl cursor-pointer transition-all hover:bg-white/5 ${image ? 'border-green-500/50 bg-green-500/5' : 'border-white/10 hover:border-prime/50'}`}>
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            className="hidden"
-                                            onChange={handleImageUpload}
-                                            disabled={uploading}
-                                        />
-                                        {uploading ? (
-                                            <Loader2 className="w-8 h-8 animate-spin text-prime" />
-                                        ) : image && mediaType === 'upload' ? (
-                                            <div className="relative group">
-                                                <img src={image} className="w-20 h-20 object-cover rounded-xl shadow-lg" alt="" />
-                                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-xl transition-all">
-                                                    <X className="w-6 h-6 text-white" onClick={(e) => { e.preventDefault(); setImage(null); }} />
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <>
-                                                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center">
-                                                    <Camera className="w-6 h-6 text-slate-400" />
-                                                </div>
-                                                <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">RESİM SEÇ VEYA ÇEK</span>
-                                            </>
-                                        )}
-                                    </label>
-                                ) : (
-                                    <div className="flex-1 space-y-2">
-                                        <input
-                                            placeholder="Görsel URL (Pinterest, Instagram vb.)"
-                                            value={mediaType === 'link' ? image || '' : ''}
-                                            onChange={(e) => setImage(e.target.value)}
-                                            className={`w-full border rounded-2xl px-5 py-4 focus:ring-2 transition-all outline-none ${styles.input} focus:ring-slate-700`}
-                                        />
-                                        <p className="text-[9px] text-slate-500 italic ml-1">* Depolama alanı kullanmaz, sistemimizi korur.</p>
-                                    </div>
-                                )}
+                                <div className="flex-1 space-y-2">
+                                    <input
+                                        placeholder="Görsel URL (Pinterest, Instagram vb.)"
+                                        value={image || ''}
+                                        onChange={(e) => setImage(e.target.value)}
+                                        className={`w-full border rounded-2xl px-5 py-4 focus:ring-2 transition-all outline-none ${styles.input} focus:ring-slate-700`}
+                                    />
+                                    <p className="text-[9px] text-slate-500 italic ml-1">* Depolama alanı kullanmaz, sistemimizi korur.</p>
+                                </div>
                             </div>
                         </div>
 

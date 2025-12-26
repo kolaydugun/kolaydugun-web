@@ -99,7 +99,7 @@ const WeddingWrapped = ({ event, onClose }) => {
                     initial={{ opacity: 0, scale: 0.9, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 1.1, y: -20 }}
-                    className="w-full max-w-md aspect-[9/16] bg-gradient-to-br from-slate-900 via-slate-800 to-black rounded-[3rem] p-12 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-2xl border border-white/10"
+                    className="w-full max-w-sm aspect-[9/16] mesh-bg rounded-[3rem] p-10 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-2xl glass-card border-white/20"
                     onClick={() => setSlideIndex((slideIndex + 1) % slides.length)}
                 >
                     {/* Animated Background Decor */}

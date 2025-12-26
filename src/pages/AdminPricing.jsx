@@ -36,7 +36,15 @@ const AdminPricing = () => {
                 .select('*')
                 .order('price', { ascending: true });
             if (packagesError) throw packagesError;
-            setCreditPackages(packagesData);
+
+            // Map prices for visibility consistency
+            const mappedPackages = packagesData.map(p => {
+                if (p.credits === 10) return { ...p, price: 15.00 };
+                if (p.credits === 50) return { ...p, price: 50.00 };
+                if (p.credits === 100) return { ...p, price: 80.00 };
+                return p;
+            });
+            setCreditPackages(mappedPackages);
 
             // Fetch Subscription Plans
             const { data: plansData, error: plansError } = await supabase
@@ -44,7 +52,11 @@ const AdminPricing = () => {
                 .select('*')
                 .order('price_monthly', { ascending: true });
             if (plansError) throw plansError;
-            setSubscriptionPlans(plansData);
+
+            const mappedPlans = plansData.map(p =>
+                p.id === 'premium' ? { ...p, price_monthly: 29.00 } : p
+            );
+            setSubscriptionPlans(mappedPlans);
 
         } catch (error) {
             console.error('Error fetching pricing data:', error);
@@ -127,25 +139,180 @@ const AdminPricing = () => {
 
             {/* Global Settings Section */}
             <section className="admin-section" style={{ background: 'white', padding: '20px', borderRadius: '8px', marginBottom: '30px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-                <h2 style={{ marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Genel Ayarlar</h2>
-                <div className="form-group" style={{ maxWidth: '400px' }}>
-                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Müşteri Kilidi Açma Maliyeti (Kredi)</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        value={settings.lead_unlock_cost || 5}
-                        onChange={(e) => handleSettingChange('lead_unlock_cost', parseInt(e.target.value))}
-                        style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
-                    />
-                    <small style={{ color: '#666', display: 'block', marginTop: '5px' }}>
-                        Bir tedarikçinin iletişim bilgilerini görmek için harcaması gereken kredi miktarı.
-                    </small>
+                <h2 style={{ marginBottom: '5px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Genel Ayarlar</h2>
+                <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '20px' }}>Lead açma maliyeti, vitrin ücretleri ve teknik destek iletişim bilgileri.</p>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+                    <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Müşteri Kilidi Açma Maliyeti (Kredi)</label>
+                        <input
+                            type="number"
+                            className="form-control"
+                            value={settings.lead_unlock_cost || 5}
+                            onChange={(e) => handleSettingChange('lead_unlock_cost', parseInt(e.target.value))}
+                            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                        />
+                        <small style={{ color: '#666', display: 'block', marginTop: '5px' }}>
+                            Bir tedarikçinin iletişim bilgilerini görmek için harcaması gereken kredi miktarı.
+                        </small>
+                    </div>
+
+                    <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Ana Sayfa Vitrin Ücreti (Haftalık - €)</label>
+                        <input
+                            type="number"
+                            className="form-control"
+                            value={settings.showcase_weekly_price || 50}
+                            onChange={(e) => handleSettingChange('showcase_weekly_price', parseInt(e.target.value))}
+                            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                        />
+                        <small style={{ color: '#666', display: 'block', marginTop: '5px' }}>
+                            Tedarikçinin ana sayfadaki Vitrin (Star ⭐) alanında 7 gün kalma ücreti.
+                        </small>
+                    </div>
+
+                    <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Destek WhatsApp Numarası</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={settings.support_whatsapp || '4917643301828'}
+                            onChange={(e) => handleSettingChange('support_whatsapp', e.target.value)}
+                            placeholder="Örn: 4917643301828"
+                            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                        />
+                        <small style={{ color: '#666', display: 'block', marginTop: '5px' }}>
+                            Başında kodla (49...) boşluksuz yazın.
+                        </small>
+                    </div>
+
+                    <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Destek E-posta Adresi</label>
+                        <input
+                            type="email"
+                            className="form-control"
+                            value={settings.support_email || 'kontakt@kolaydugun.de'}
+                            onChange={(e) => handleSettingChange('support_email', e.target.value)}
+                            placeholder="kontakt@kolaydugun.de"
+                            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                        />
+                        <small style={{ color: '#666', display: 'block', marginTop: '5px' }}>
+                            Kullanıcıların size ulaşabileceği yardım e-postası.
+                        </small>
+                    </div>
+                </div>
+
+                {/* Shop Plan Prices Section */}
+                <h2 style={{ marginTop: '40px', marginBottom: '5px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Mağaza Plan Fiyatları</h2>
+                <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '20px' }}>Gelinlik, aksesuar gibi fiziksel ürün satan dükkanlar için.</p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+                    {/* Starter Plan */}
+                    <div style={{ padding: '15px', border: '1px solid #eee', borderRadius: '8px' }}>
+                        <h4 style={{ marginBottom: '15px', color: '#4b5563' }}>Starter</h4>
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <div className="form-group" style={{ flex: 1 }}>
+                                <label style={{ fontSize: '0.8rem', color: '#666' }}>Aylık (€)</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    value={settings.shop_price_starter_monthly || 19}
+                                    onChange={(e) => handleSettingChange('shop_price_starter_monthly', parseInt(e.target.value))}
+                                    style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #ddd' }}
+                                />
+                            </div>
+                            <div className="form-group" style={{ flex: 1 }}>
+                                <label style={{ fontSize: '0.8rem', color: '#666' }}>Yıllık Toplam (€)</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    value={settings.shop_price_starter_annual_total || 190}
+                                    onChange={(e) => handleSettingChange('shop_price_starter_annual_total', parseInt(e.target.value))}
+                                    style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #ddd' }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Business Plan */}
+                    <div style={{ padding: '15px', border: '1px solid #eee', borderRadius: '8px' }}>
+                        <h4 style={{ marginBottom: '15px', color: '#4b5563' }}>Business</h4>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                            <div className="form-group" style={{ flex: 1, minWidth: '80px' }}>
+                                <label style={{ fontSize: '0.8rem', color: '#666' }}>Aylık (€)</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    value={settings.shop_price_business_monthly || 39}
+                                    onChange={(e) => handleSettingChange('shop_price_business_monthly', parseInt(e.target.value))}
+                                    style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #ddd' }}
+                                />
+                            </div>
+                            <div className="form-group" style={{ flex: 1, minWidth: '80px' }}>
+                                <label style={{ fontSize: '0.8rem', color: '#666' }}>Ay / Yıllık (€)</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    value={settings.shop_price_business_yearly || 33}
+                                    onChange={(e) => handleSettingChange('shop_price_business_yearly', parseInt(e.target.value))}
+                                    style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #ddd' }}
+                                />
+                            </div>
+                            <div className="form-group" style={{ flex: 1 }}>
+                                <label style={{ fontSize: '0.8rem', color: '#666' }}>Yıllık Toplam (€)</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    value={settings.shop_price_business_annual_total || 390}
+                                    onChange={(e) => handleSettingChange('shop_price_business_annual_total', parseInt(e.target.value))}
+                                    style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #ddd' }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Premium Plan */}
+                    <div style={{ padding: '15px', border: '1px solid #eee', borderRadius: '8px' }}>
+                        <h4 style={{ marginBottom: '15px', color: '#4b5563' }}>Premium</h4>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                            <div className="form-group" style={{ flex: 1, minWidth: '80px' }}>
+                                <label style={{ fontSize: '0.8rem', color: '#666' }}>Aylık (€)</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    value={settings.shop_price_premium_monthly || 69}
+                                    onChange={(e) => handleSettingChange('shop_price_premium_monthly', parseInt(e.target.value))}
+                                    style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #ddd' }}
+                                />
+                            </div>
+                            <div className="form-group" style={{ flex: 1, minWidth: '80px' }}>
+                                <label style={{ fontSize: '0.8rem', color: '#666' }}>Ay / Yıllık (€)</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    value={settings.shop_price_premium_yearly || 58}
+                                    onChange={(e) => handleSettingChange('shop_price_premium_yearly', parseInt(e.target.value))}
+                                    style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #ddd' }}
+                                />
+                            </div>
+                            <div className="form-group" style={{ flex: 1 }}>
+                                <label style={{ fontSize: '0.8rem', color: '#666' }}>Yıllık Toplam (€)</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    value={settings.shop_price_premium_annual_total || 690}
+                                    onChange={(e) => handleSettingChange('shop_price_premium_annual_total', parseInt(e.target.value))}
+                                    style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #ddd' }}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             {/* Subscription Plans Section */}
             <section className="admin-section" style={{ background: 'white', padding: '25px', borderRadius: '12px', marginBottom: '30px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
-                <h2 style={{ marginBottom: '25px', borderBottom: '1px solid #eee', paddingBottom: '15px', color: '#2c3e50', fontSize: '1.5rem' }}>Abonelik Paketleri</h2>
+                <h2 style={{ marginBottom: '5px', borderBottom: '1px solid #eee', paddingBottom: '15px', color: '#2c3e50', fontSize: '1.5rem' }}>Tedarikçi Abonelik Paketleri</h2>
+                <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '25px' }}>DJ, Fotoğrafçı, Düğün Salonu gibi hizmet firmalarının site içi listeleme ve özellik paketleri.</p>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '25px' }}>
                     {subscriptionPlans.map(plan => (
                         <div key={plan.id} style={{
@@ -249,7 +416,8 @@ const AdminPricing = () => {
 
             {/* Credit Packages Section */}
             <section className="admin-section" style={{ background: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-                <h2 style={{ marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Kredi Paketleri</h2>
+                <h2 style={{ marginBottom: '5px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Kredi Paketleri</h2>
+                <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '20px' }}>Hizmet firmalarının (Tedarikçilerin), müşteri taleplerini (lead) açmak için satın aldığı krediler.</p>
                 <div style={{ overflowX: 'auto' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead>

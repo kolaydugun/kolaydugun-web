@@ -75,64 +75,63 @@ const QRCodeModal = ({ isOpen, onClose, url, eventName }) => {
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/40 backdrop-blur-md">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="bg-slate-900 w-full max-w-sm rounded-[2.5rem] p-8 border border-white/10 shadow-2xl relative overflow-hidden"
+                        className="glass-card w-full max-w-sm rounded-[40px] p-8 relative overflow-hidden"
                     >
-                        {/* Background Decoration */}
-                        <div className="absolute -top-24 -right-24 w-48 h-48 bg-prime/10 blur-[60px] rounded-full" />
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-prime to-transparent opacity-50" />
 
                         <div className="relative z-10">
-                            <div className="flex justify-between items-center mb-6">
-                                <h3 className="text-xl font-black text-white tracking-tight">{t('qrModal.title')}</h3>
+                            <div className="flex justify-between items-center mb-8">
+                                <h3 className="text-2xl font-black text-white premium-text tracking-tight uppercase">{t('qrModal.title')}</h3>
                                 <button
                                     onClick={onClose}
-                                    className="p-2 hover:bg-white/5 rounded-full text-slate-400 hover:text-white transition-colors"
+                                    className="p-3 hover:bg-white/5 rounded-2xl text-slate-500 hover:text-white transition-all transform hover:rotate-90 duration-300"
                                 >
                                     <X className="w-6 h-6" />
                                 </button>
                             </div>
 
-                            <div id="qr-code-canvas" className="bg-white p-6 rounded-3xl mb-8 flex flex-col items-center justify-center shadow-inner">
+                            <div id="qr-code-canvas" className="bg-white p-8 rounded-[32px] mb-8 flex flex-col items-center justify-center shadow-[inset_0_2px_10px_rgba(0,0,0,0.1)] group">
                                 <QRCodeCanvas
                                     value={url}
-                                    size={250}
+                                    size={220}
                                     level="H"
                                     includeMargin={false}
                                 />
-                                <div className="mt-4 text-center">
-                                    <p className="text-slate-900 font-bold text-sm">{eventName}</p>
-                                    <p className="text-slate-500 text-[10px] uppercase font-black tracking-widest mt-0.5">{t('qrModal.scanText')}</p>
+                                <div className="mt-6 text-center">
+                                    <p className="text-slate-900 font-black text-lg tracking-tight">{eventName}</p>
+                                    <p className="text-slate-400 text-[10px] uppercase font-black tracking-[0.2em] mt-1">{t('qrModal.scanText')}</p>
                                 </div>
                             </div>
 
-                            <div className="mb-6 px-4">
-                                <p className="text-center text-slate-400 text-xs leading-relaxed font-medium">
+                            <div className="mb-8 px-4">
+                                <p className="text-center text-slate-400 text-xs leading-relaxed font-bold uppercase tracking-wide opacity-60">
                                     {t('qrModal.instruction')}
                                 </p>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-3">
+                            <div className="grid grid-cols-2 gap-4">
                                 <button
                                     onClick={handleCopy}
-                                    className="flex items-center justify-center gap-2 py-4 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl font-bold text-sm transition-all active:scale-95"
+                                    className="flex items-center justify-center gap-2 py-5 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white rounded-[24px] font-black text-[10px] uppercase tracking-widest transition-all active:scale-95"
                                 >
                                     {copied ? <CheckCircle2 className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                                     {copied ? t('qrModal.copied') : t('qrModal.copyButton')}
                                 </button>
                                 <button
                                     onClick={handleDownload}
-                                    className="flex items-center justify-center gap-2 py-4 bg-prime hover:bg-rose-600 text-white rounded-2xl font-bold text-sm transition-all shadow-lg shadow-prime/20 active:scale-95"
+                                    className="flex items-center justify-center gap-2 py-5 bg-prime hover:bg-rose-600 text-white rounded-[24px] font-black text-[10px] uppercase tracking-widest transition-all shadow-[0_15px_30px_rgba(244,63,94,0.3)] active:scale-95"
                                 >
                                     <Download className="w-4 h-4" />
                                     {t('qrModal.downloadButton')}
                                 </button>
                             </div>
 
-                            <p className="text-center text-slate-500 text-[10px] mt-6 font-medium uppercase tracking-widest">
+                            <p className="text-center text-slate-600 text-[9px] mt-8 font-black uppercase tracking-[0.4em] opacity-40">
                                 {t('qrModal.footerText')}
                             </p>
                         </div>

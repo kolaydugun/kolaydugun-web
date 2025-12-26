@@ -263,10 +263,33 @@ const LiveFeed = () => {
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => setSoundEnabled(!soundEnabled)}
+                        onClick={() => {
+                            setSoundEnabled(!soundEnabled);
+                            if (!soundEnabled) {
+                                // Trigger a silent play to "unlock" audio on some browsers
+                                const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+                                audio.volume = 0;
+                                audio.play().catch(() => { });
+                            }
+                        }}
                         className={`p-4 rounded-2xl transition-all border ${soundEnabled ? 'bg-prime/10 border-prime/20 text-prime shadow-[0_0_20px_rgba(244,63,94,0.1)]' : 'bg-white/5 border-white/5 text-white/20'}`}
+                        title={soundEnabled ? "Sesi Kapat" : "Sesi Aç"}
                     >
                         {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+                    </motion.button>
+
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => {
+                            const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+                            audio.volume = 0.5;
+                            audio.play().catch(e => alert("Lütfen önce sayfada bir yere tıklayın (Tarayıcı engeli)."));
+                        }}
+                        className="p-4 rounded-2xl bg-white/5 border border-white/5 text-white/40 hover:text-white"
+                        title="Sesi Test Et"
+                    >
+                        <Volume2 className="w-4 h-4" />
                     </motion.button>
 
                     <motion.button
